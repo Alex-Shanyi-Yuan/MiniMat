@@ -7,6 +7,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import com.alexyuan.States.GameStateManager;
+import com.alexyuan.util.KeyHandler;
+import com.alexyuan.util.MouseHandler;
+import com.alexyuan.GameLauncher;
+
 public class GamePanel extends JPanel implements Runnable{
 
 	private int width, height;
@@ -15,7 +20,12 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	private BufferedImage img;
 	private Graphics2D g;
+	
+	private MouseHandler mouse;
+	private KeyHandler key;
 
+	private GameStateManager gsm;
+	
 	public GamePanel(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -32,89 +42,69 @@ public class GamePanel extends JPanel implements Runnable{
 		thread.start();
 		
 	}
-	
-	   public void run() {
-	        init();
 
-	        final double GAME_HERTZ = 64.0;
-	        final double TBU = 1000000000 / GAME_HERTZ; // Time Before Update
+    public void run() {
+         init();
+        
+         long lastTime = System.nanoTime();
+         double amountTicks = 60.0;
+         int ticks = 0;
+         double ns = 1000000000/amountTicks;
+         double deltaTime = 0;
+         long timer = System.currentTimeMillis();
+         int frames = 0;
+ 
+         while (running) {
+         	long now = System.nanoTime();
+         	deltaTime += (now - lastTime) / ns;
+         	lastTime = now;
+        	
+        	if(deltaTime >= 1) {
+        		deltaTime --;
+        		update();
+        		ticks++;
+        	}
+        	
+        	frames++;
+            input(mouse, key);
+            render();
+            draw();
+            
+            if(System.currentTimeMillis() - timer > 1000) {
+            	timer += 1000;
+            	GameLauncher.window.setTitle("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
+            	ticks = 0;
+            	frames = 0;
+            }
+        }
+    }
 
-	        final int MUBR = 3; // Must Update before render
-
-	        double lastUpdateTime = System.nanoTime();
-	        double lastRenderTime;
-
-	        final double TARGET_FPS = 1000;
-	        final double TTBR = 1000000000 / TARGET_FPS; // Total time before render
-
-	        int frameCount = 0;
-	        int lastSecondTime = (int) (lastUpdateTime / 1000000000);
-	        int oldFrameCount = 0;
-
-	        while (running) {
-
-	            double now = System.nanoTime();
-	            int updateCount = 0;
-	            while (((now - lastUpdateTime) > TBU) && (updateCount < MUBR)) {
-	                update();
-	                input();
-	                lastUpdateTime += TBU;
-	                updateCount++;
-	            }
-
-	            if ((now - lastUpdateTime) > TBU) {
-	                lastUpdateTime = now - TBU;
-	            }
-
-	            input();
-	            render();
-	            draw();
-	            lastRenderTime = now;
-	            frameCount++;
-
-	            int thisSecond = (int) (lastUpdateTime / 1000000000);
-	            if (thisSecond > lastSecondTime) {
-	                if (frameCount != oldFrameCount) {
-	                    System.out.println("FPS: " + frameCount);
-	                    oldFrameCount = frameCount;
-	                }
-
-	                frameCount = 0;
-	                lastSecondTime = thisSecond;
-	            }
-
-	            while (now - lastRenderTime < TTBR && now - lastUpdateTime < TBU) {
-	                Thread.yield();
-
-	                try {
-	                    Thread.sleep(1);
-	                } catch (Exception e) {
-	                    System.out.println("ERROR: yielding thread");
-	                }
-
-	                now = System.nanoTime();
-	            }
-
-	        }
-	    }
-	
 	private void init() {
 		running = true;
 		
 		img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 		g = (Graphics2D) img.getGraphics();
+		
+		mouse = new MouseHandler(this);
+		key = new KeyHandler(this);
+		
+		gsm = new GameStateManager();
 	}
 	
 	private void update() {
-		
+		gsm.update();
 	}
 	
-	private void input() {}
+	private void input(MouseHandler mouse, KeyHandler key) {
+		gsm.input(mouse, key);
+	}
 	
 	private void render() {
 		if(g != null) {
 			g.setColor(new Color(66,134,244));
 			g.fillRect(0, 0, width, height);
+			
+			gsm.render(g);
 		}
 	}
 	

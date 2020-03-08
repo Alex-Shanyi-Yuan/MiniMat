@@ -2,8 +2,10 @@ package com.alexyuan;
 
 public class GameLauncher {
 	
+	public static Window window;
+	
 	public GameLauncher() {
-		new Window();
+		window = new Window();
 	}
 	
 	public static void main(String[] args) {
