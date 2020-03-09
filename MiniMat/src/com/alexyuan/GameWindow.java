@@ -5,11 +5,11 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-public class Window extends JFrame {
+public class GameWindow extends JFrame {
 	
 	private final String TITLE = "MINI MAT";
 	
-	public Window() {
+	public GameWindow() {
 		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(new GamePanel(1200, 600));

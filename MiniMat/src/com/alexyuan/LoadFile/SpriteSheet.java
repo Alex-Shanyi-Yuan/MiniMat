@@ -1,4 +1,4 @@
-package com.alexyuan.Graphics;
+package com.alexyuan.LoadFile;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

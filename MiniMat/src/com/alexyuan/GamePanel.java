@@ -72,7 +72,8 @@ public class GamePanel extends JPanel implements Runnable{
             
             if(System.currentTimeMillis() - timer > 1000) {
             	timer += 1000;
-            	GameLauncher.window.setTitle("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
+            	//SplashWindow.getWindow().setTitle
+            	System.out.println("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
             	ticks = 0;
             	frames = 0;
             }
@@ -96,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	private void input(MouseHandler mouse, KeyHandler key) {
-		gsm.input(mouse, key);
+		//gsm.input(mouse, key);
 	}
 	
 	private void render() {
