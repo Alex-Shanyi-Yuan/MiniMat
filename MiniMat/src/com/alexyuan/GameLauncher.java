@@ -2,19 +2,27 @@ package com.alexyuan;
 
 import java.awt.Window;
 
+import javax.swing.JComponent;
+
 public class GameLauncher {
 	
-	private SplashWindow splashWindow;
+	private static GameWindow window;
+	private static SplashWindow splash;
 	
 	public GameLauncher() {
-		splashWindow = new SplashWindow();
+		splash = new SplashWindow();
+		window = new GameWindow();
 	}
 	
 	public static void main(String[] args) {
 		new GameLauncher();
 	}
 
-	public SplashWindow getSplashWindow() {
-		return splashWindow;
+	public static GameWindow getWindow() {
+		return window;
+	}
+
+	public static SplashWindow getSplashWindow() {
+		return splash;
 	}
 }

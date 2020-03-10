@@ -6,8 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 public class SplashWindow extends JFrame{
-	private static GameWindow window;
-	
+
 	SplashWindow() {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -20,14 +19,4 @@ public class SplashWindow extends JFrame{
 		setVisible(true);
 		
 	}
-
-	
-	public static GameWindow getWindow() {
-		return window;
-	}
-	
-	public void initGameWindow() {
-		window = new GameWindow();
-	}
-
 }

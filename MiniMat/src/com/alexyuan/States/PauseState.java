@@ -1,6 +1,6 @@
 package com.alexyuan.States;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
@@ -25,7 +25,7 @@ public class PauseState extends GameState {
 	}
 
 	@Override
-	public void render(Graphics2D g) {
+	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 
 	}

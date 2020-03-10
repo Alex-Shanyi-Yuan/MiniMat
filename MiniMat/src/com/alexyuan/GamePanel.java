@@ -1,8 +1,11 @@
 package com.alexyuan;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -12,14 +15,11 @@ import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 import com.alexyuan.GameLauncher;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends Canvas implements Runnable{
 
 	private int width, height;
 	
 	private boolean running = false;
-	
-	private BufferedImage img;
-	private Graphics2D g;
 	
 	private MouseHandler mouse;
 	private KeyHandler key;
@@ -29,10 +29,6 @@ public class GamePanel extends JPanel implements Runnable{
 	public GamePanel(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
-		setPreferredSize(new Dimension(width,height));
-		setFocusable(true);
-		requestFocus();
 	}
 	
 	public void addNotify() {
@@ -68,12 +64,10 @@ public class GamePanel extends JPanel implements Runnable{
         	frames++;
             input(mouse, key);
             render();
-            draw();
             
             if(System.currentTimeMillis() - timer > 1000) {
             	timer += 1000;
-            	//SplashWindow.getWindow().setTitle
-            	System.out.println("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
+            	GameLauncher.getWindow().setTitle("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
             	ticks = 0;
             	frames = 0;
             }
@@ -82,9 +76,6 @@ public class GamePanel extends JPanel implements Runnable{
 
 	private void init() {
 		running = true;
-		
-		img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-		g = (Graphics2D) img.getGraphics();
 		
 		mouse = new MouseHandler(this);
 		key = new KeyHandler(this);
@@ -97,22 +88,25 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	private void input(MouseHandler mouse, KeyHandler key) {
-		//gsm.input(mouse, key);
+		gsm.input(mouse, key);
 	}
 	
 	private void render() {
-		if(g != null) {
-			g.setColor(new Color(66,134,244));
-			g.fillRect(0, 0, width, height);
-			
-			gsm.render(g);
+		BufferStrategy bs = this.getBufferStrategy();
+		if(bs == null) {
+			this.createBufferStrategy(3);
+			return;
 		}
-	}
-	
-	private void draw() {
-		Graphics2D g2 = (Graphics2D) this.getGraphics();
-		g2.drawImage(img, 0,0,width,height, null);
-		g2.dispose();
-	}
-	
+		
+		Graphics g = bs.getDrawGraphics();
+		
+		
+		g.setColor(new Color(66,134,244));
+		g.fillRect(0,0, width, height);
+			
+		gsm.render(g);
+		
+		bs.show();
+		g.dispose();
+	}	
 }

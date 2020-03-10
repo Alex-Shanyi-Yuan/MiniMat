@@ -9,15 +9,14 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.alexyuan.LoadFile.Fonts;
+import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.LoadFile.Audio;
 
 public class SplashPanel extends JPanel implements Runnable{
 	
-	private GameLauncher launcher;
-	private SplashWindow splashW;
-	
-	private Fonts fonts;
-	private Audio audio;
+	private static Fonts fonts;
+	private static Audio audio;
+	private static Textures texture;
 	
 	private int width, height;
 	private boolean loading = false;
@@ -41,33 +40,27 @@ public class SplashPanel extends JPanel implements Runnable{
 	public void addNotify() {
 		super.addNotify();
 		
+		loading = true;
+		
 		thread = new Thread(this, "Splash");
 		thread.start();
 		
-	}
-	
-	private void init() {
-		
 		fonts = new Fonts();
 		audio = new Audio();
-		
-		loading = true;
+		texture = new Textures();
 		
 		img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 		g = (Graphics2D) img.getGraphics();	
+		
 	}
 	
 	private void stop() {
 		
-		launcher.getSplashWindow().setVisible(false);
-		launcher.getSplashWindow().dispose();
-		splashW.initGameWindow();
+		GameLauncher.getWindow().setVisible(true);
+		GameWindow.getGamePanel().setVisible(true);
 		
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		GameLauncher.getSplashWindow().setVisible(false);
+		GameLauncher.getSplashWindow().dispose();
 	}
 	
 	private void render() {
@@ -97,7 +90,7 @@ public class SplashPanel extends JPanel implements Runnable{
 	private void update() {
 		try {
 			if(widthRect < 380) {
-				Thread.sleep(500);
+				Thread.sleep(100);
 				widthRect += 20;
 			}else
 				loading = false;
@@ -109,7 +102,6 @@ public class SplashPanel extends JPanel implements Runnable{
 
 	@Override
 	public void run() {
-		init();
 		
 		while(loading) {
 			update();
@@ -120,5 +112,17 @@ public class SplashPanel extends JPanel implements Runnable{
 		stop();
 		
 	}
-	
+
+	public static Fonts getFonts() {
+		return fonts;
+	}
+
+	public static Audio getAudio() {
+		return audio;
+	}
+
+	public static Textures getTexture() {
+		return texture;
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.alexyuan.States;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class GameStateManager {
 		
 		states = new GameState[4];
 		
-		states[PLAY] = new PlayState(this);
+		states[MENU] = new MenuState(this);
 	}
 	
 	public void pop(int state) {
@@ -68,7 +69,7 @@ public class GameStateManager {
 		}
 	}
 	
-	public void render(Graphics2D g) {
+	public void render(Graphics g) {
 		for(GameState i : states) {
 			if(i != null)
 				i.render(g);
