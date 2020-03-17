@@ -8,12 +8,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 
 import com.alexyuan.States.GameStateManager;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 import com.alexyuan.GameLauncher;
+import com.alexyuan.LoadFile.Audio;
+import com.alexyuan.LoadFile.Textures;
 
 public class GamePanel extends Canvas implements Runnable{
 
@@ -23,6 +26,8 @@ public class GamePanel extends Canvas implements Runnable{
 	
 	private MouseHandler mouse;
 	private KeyHandler key;
+	
+	private Thread thread;
 
 	private GameStateManager gsm;
 	
@@ -34,14 +39,16 @@ public class GamePanel extends Canvas implements Runnable{
 	public void addNotify() {
 		super.addNotify();
 		
-		Thread thread = new Thread(this, "Game");
+		
+		
+		thread = new Thread(this, "Game");
 		thread.start();
 		
 	}
 
     public void run() {
          init();
-        
+         
          long lastTime = System.nanoTime();
          double amountTicks = 60.0;
          int ticks = 0;
@@ -67,7 +74,7 @@ public class GamePanel extends Canvas implements Runnable{
             
             if(System.currentTimeMillis() - timer > 1000) {
             	timer += 1000;
-            	GameLauncher.getWindow().setTitle("Mini Mat         							  FPS: " + frames + " | GameUpdate: " + ticks);
+            	GameLauncher.getWindow().setTitle("Mini Mat    FPS: " + frames + " | GameUpdate: " + ticks);
             	ticks = 0;
             	frames = 0;
             }
@@ -76,6 +83,8 @@ public class GamePanel extends Canvas implements Runnable{
 
 	private void init() {
 		running = true;
+		
+		Audio.getIntro().loop(Clip.LOOP_CONTINUOUSLY);
 		
 		mouse = new MouseHandler(this);
 		key = new KeyHandler(this);
@@ -99,11 +108,7 @@ public class GamePanel extends Canvas implements Runnable{
 		}
 		
 		Graphics g = bs.getDrawGraphics();
-		
-		
-		g.setColor(new Color(66,134,244));
-		g.fillRect(0,0, width, height);
-			
+					
 		gsm.render(g);
 		
 		bs.show();

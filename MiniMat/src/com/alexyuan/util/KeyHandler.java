@@ -60,6 +60,12 @@ public class KeyHandler implements KeyListener{
     private Key down = new Key();
     private Key left = new Key();
     private Key right = new Key();
+    
+    private Key upArrow = new Key();
+    private Key downArrow = new Key();
+    private Key leftArrow = new Key();
+    private Key rightArrow = new Key();
+    
     private Key inventory = new Key();
     private Key enter = new Key();
     private Key escape = new Key();
@@ -87,6 +93,10 @@ public class KeyHandler implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_S) down.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_A) left.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_D) right.toggle(pressed);
+        if(e.getKeyCode() == KeyEvent.VK_UP) upArrow.toggle(pressed);
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) downArrow.toggle(pressed);
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) leftArrow.toggle(pressed);
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightArrow.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_E) inventory.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
@@ -149,6 +159,21 @@ public class KeyHandler implements KeyListener{
 	public Key getF1() {
 		return f1;
 	}
-    
+
+	public Key getUpArrow() {
+		return upArrow;
+	}
+
+	public Key getDownArrow() {
+		return downArrow;
+	}
+
+	public Key getLeftArrow() {
+		return leftArrow;
+	}
+
+	public Key getRightArrow() {
+		return rightArrow;
+	}
     
 }

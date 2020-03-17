@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Fonts {
 	
-	private Font magon1 = null, magon2 = null, magon3 = null;
+	private static Font magon1 = null, magon2 = null, magon3 = null;
 	
 	public Fonts() {
 		magon1 = loadFont("resources/Font/mago1.ttf");
@@ -29,15 +29,15 @@ public class Fonts {
 		return null;
 	}
 	
-	public Font getMagon1() {
+	public static Font getMagon1() {
 		return magon1;
 	};
 	
-	public Font getMagon2() {
+	public static Font getMagon2() {
 		return magon2;
 	};
 	
-	public Font getMagon3() {
+	public static Font getMagon3() {
 		return magon3;
 	};
 }

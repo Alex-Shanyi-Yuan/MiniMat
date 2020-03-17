@@ -3,6 +3,8 @@ package com.alexyuan.States;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.alexyuan.LoadFile.Fonts;
+import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
@@ -24,20 +26,26 @@ public class MenuState extends GameState {
 	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {
 		if(key.getUp().isHoldDown())
-			y --;
+			y -= 2;
 		if(key.getDown().isHoldDown())
-			y++;
+			y+= 2;
 		if(key.getLeft().isHoldDown())
-			x --;
+			x -= 2;
 		if(key.getRight().isHoldDown())
-			x++;
+			x+= 2;
 
 	}
 
 	@Override
 	public void render(Graphics g) {
+		g.drawImage(Textures.getMenuBack(), 0, 0, null);
+		
 		g.setColor(Color.gray);
-		g.fill3DRect(x, y, 100, 100, true);
+		g.setFont(Fonts.getMagon1().deriveFont(100f));
+		g.drawString("MINI MAT", 465, 150);
+		g.setFont(Fonts.getMagon1().deriveFont(60f));
+		g.drawString("- True Friendship -", 410, 225);
+		
 
 	}
 
