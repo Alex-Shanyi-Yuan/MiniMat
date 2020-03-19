@@ -43,6 +43,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         mouseB = -1;
+        System.out.println("MouseX: " + mouseX + "        MouseY: " + mouseY);
     }
 
     @Override

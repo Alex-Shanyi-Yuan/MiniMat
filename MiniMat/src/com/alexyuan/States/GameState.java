@@ -1,13 +1,13 @@
 package com.alexyuan.States;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
 public abstract class GameState {
 	
-	private GameStateManager gsm;
+	protected GameStateManager gsm;
 	
 	public GameState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -17,6 +17,6 @@ public abstract class GameState {
 	
 	public abstract void input(MouseHandler mouse, KeyHandler key);
 
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics2D g);
 	
 }

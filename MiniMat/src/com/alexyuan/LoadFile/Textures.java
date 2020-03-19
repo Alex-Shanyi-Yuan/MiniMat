@@ -10,20 +10,12 @@ public class Textures {
 	
 	private static BufferedImage icon = null;
 	private static BufferedImage menuBack = null;
+	private static BufferedImage buttonBoard = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
 		menuBack = loadImage("/resources/Texture/MenuBack.jpg");
-	}
-	
-	private ImageIcon loadTextures(String path) {
-		java.net.URL imgURL = getClass().getResource(path);
-	    if (imgURL != null) {
-	        return new ImageIcon(imgURL);
-	    } else {
-	        System.err.println("Couldn't find file: " + path);
-	        return null;
-	    }
+		buttonBoard = loadImage("/resources/Texture/ButtonBoard.png");
 	}
 	
 	private BufferedImage loadImage(String path){
@@ -42,5 +34,9 @@ public class Textures {
 	
 	public static BufferedImage getMenuBack() {
 		return menuBack;
+	}
+	
+	public static BufferedImage getButtonBoard() {
+		return buttonBoard;
 	}
 }

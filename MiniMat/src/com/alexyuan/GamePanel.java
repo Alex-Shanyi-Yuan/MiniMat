@@ -3,7 +3,6 @@ package com.alexyuan;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -39,7 +38,17 @@ public class GamePanel extends Canvas implements Runnable{
 	public void addNotify() {
 		super.addNotify();
 		
+		if(running)
+			return;
 		
+		running = true;
+		
+		Audio.getIntro().loop(Clip.LOOP_CONTINUOUSLY);
+		
+		mouse = new MouseHandler(this);
+		key = new KeyHandler(this);
+		
+		gsm = new GameStateManager(width,height);
 		
 		thread = new Thread(this, "Game");
 		thread.start();
@@ -47,7 +56,6 @@ public class GamePanel extends Canvas implements Runnable{
 	}
 
     public void run() {
-         init();
          
          long lastTime = System.nanoTime();
          double amountTicks = 60.0;
@@ -56,20 +64,21 @@ public class GamePanel extends Canvas implements Runnable{
          double deltaTime = 0;
          long timer = System.currentTimeMillis();
          int frames = 0;
+         long now;
  
          while (running) {
-         	long now = System.nanoTime();
+         	now = System.nanoTime();
          	deltaTime += (now - lastTime) / ns;
          	lastTime = now;
         	
         	if(deltaTime >= 1) {
         		deltaTime --;
         		update();
+        		input(mouse, key);
         		ticks++;
         	}
         	
         	frames++;
-            input(mouse, key);
             render();
             
             if(System.currentTimeMillis() - timer > 1000) {
@@ -80,17 +89,6 @@ public class GamePanel extends Canvas implements Runnable{
             }
         }
     }
-
-	private void init() {
-		running = true;
-		
-		Audio.getIntro().loop(Clip.LOOP_CONTINUOUSLY);
-		
-		mouse = new MouseHandler(this);
-		key = new KeyHandler(this);
-		
-		gsm = new GameStateManager();
-	}
 	
 	private void update() {
 		gsm.update();
@@ -107,11 +105,20 @@ public class GamePanel extends Canvas implements Runnable{
 			return;
 		}
 		
-		Graphics g = bs.getDrawGraphics();
+		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 					
 		gsm.render(g);
 		
 		bs.show();
 		g.dispose();
-	}	
+	}
+
+	public MouseHandler getMouse() {
+		return mouse;
+	}
+
+	public KeyHandler getKey() {
+		return key;
+	}
+	
 }

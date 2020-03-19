@@ -1,6 +1,5 @@
 package com.alexyuan.States;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -11,53 +10,56 @@ import com.alexyuan.util.MouseHandler;
 
 public class GameStateManager {
 	
-	private GameState[] states;
+	protected GameState[] states;
 	
-	public static final int MENU = 0;
-    public static final int PLAY = 1;
-    public static final int PAUSE = 2;
-    public static final int GAMEOVER = 3;
-	
+	protected final int MENU = 0;
+	protected final int PLAY = 1;
+	protected final int PAUSE = 2;
+	protected final int GAMEOVER = 3;
+	protected final int SETTING = 4;
+	protected int width, height;
+    
 	private static Vector2f map;
 	
-	public GameStateManager() {
+	public GameStateManager(int width, int height) {
+		this.width = width;
+		this.height = height;
+		
 		map = new Vector2f(GamePanel.WIDTH, GamePanel.HEIGHT);
 		Vector2f.setWorldVar(map.getX(), map.getY());
 		
-		states = new GameState[4];
+		states = new GameState[5];
 		
 		states[MENU] = new MenuState(this);
 	}
 	
-	public void pop(int state) {
+	protected void pop(int state) {
         states[state] = null;
     }
 
-    public void add(int state) {
+	protected void add(int state) {
         if (states[state] != null)
             return;
 
-        if (state == PLAY) {
+        if (state == PLAY) 
             states[PLAY] = new PlayState(this);
-        }
-        else if (state == MENU) {
+        else if (state == MENU) 
             states[MENU] = new MenuState(this);
-        }
-        else if (state == PAUSE) {
+        else if (state == PAUSE) 
             states[PAUSE] = new PauseState(this);
-        }
-        else if (state == GAMEOVER) {
+        else if (state == GAMEOVER) 
             states[GAMEOVER] = new GameOverState(this);
-        }
+        else if (state == SETTING)
+        	states[SETTING] = new SettingState(this);
     
     }
 
-    public void addAndpop(int state) {
-        addAndpop(state, 0);
+	protected void addAndpop(int state) {
+        addAndpop(state, MENU);
     }
 
-    public void addAndpop(int state, int remove) {
-        pop(state);
+	protected void addAndpop(int state, int remove) {
+        pop(remove);
         add(state);
     }
 
@@ -69,7 +71,7 @@ public class GameStateManager {
 		}
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics2D g) {
 		for(GameState i : states) {
 			if(i != null)
 				i.render(g);
