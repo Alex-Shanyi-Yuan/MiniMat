@@ -121,4 +121,12 @@ public class GamePanel extends Canvas implements Runnable{
 		return key;
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 }

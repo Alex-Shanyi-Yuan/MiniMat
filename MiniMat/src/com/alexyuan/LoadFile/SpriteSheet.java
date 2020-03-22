@@ -12,7 +12,7 @@ public class SpriteSheet {
 
     private Sprite SPRITESHEET = null;
     private Sprite[][] spriteArray;
-    private final int TILE_SIZE = 32;
+    private final int TILE_SIZE = 64;
     public int w;
     public int h;
     private int wSprite;
@@ -24,11 +24,10 @@ public class SpriteSheet {
         w = TILE_SIZE;
         h = TILE_SIZE;
 
-        System.out.println("Loading: " + file + "...");
         SPRITESHEET = new Sprite(loadSprite(file));
 
-        wSprite = SPRITESHEET.image.getWidth() / w;
-        hSprite = SPRITESHEET.image.getHeight() / h;
+        wSprite = SPRITESHEET.getImage().getWidth() / w;
+        hSprite = SPRITESHEET.getImage().getHeight() / h;
         loadSpriteArray();
     }
 
@@ -36,11 +35,10 @@ public class SpriteSheet {
         this.w = w;
         this.h = h;
 
-        System.out.println("Loading: " + name + "...");
         SPRITESHEET = sprite;
 
-        wSprite = SPRITESHEET.image.getWidth() / w;
-        hSprite = SPRITESHEET.image.getHeight() / h;
+        wSprite = SPRITESHEET.getImage().getWidth() / w;
+        hSprite = SPRITESHEET.getImage().getHeight() / h;
         loadSpriteArray();
         
     }
@@ -50,11 +48,10 @@ public class SpriteSheet {
         this.h = h;
         this.file = file;
 
-        System.out.println("Loading: " + file + "...");
         SPRITESHEET = new Sprite(loadSprite(file));
 
-        wSprite = SPRITESHEET.image.getWidth() / w;
-        hSprite = SPRITESHEET.image.getHeight() / h;
+        wSprite = SPRITESHEET.getImage().getWidth() / w;
+        hSprite = SPRITESHEET.getImage().getHeight() / h;
         loadSpriteArray();
     }
 
@@ -65,12 +62,12 @@ public class SpriteSheet {
 
     public void setWidth(int i) {
         w = i;
-        wSprite = SPRITESHEET.image.getWidth() / w;
+        wSprite = SPRITESHEET.getImage().getWidth() / w;
     }
 
     public void setHeight(int i) {
         h = i;
-        hSprite = SPRITESHEET.image.getHeight() / h;
+        hSprite = SPRITESHEET.getImage().getHeight() / h;
     }
 
     public int getWidth() { return w; }
@@ -117,7 +114,7 @@ public class SpriteSheet {
     }
 
     public BufferedImage getSubimage(int x, int y, int w, int h) {
-        return SPRITESHEET.image.getSubimage(x, y, w, h);
+        return SPRITESHEET.getImage().getSubimage(x, y, w, h);
     }
 
     public Sprite[] getSpriteArray(int i) {
@@ -134,7 +131,7 @@ public class SpriteSheet {
 
         for (int i = 0; i < img.size(); i++) {
             if (img.get(i) != null) {
-                g.drawImage(img.get(i).image, (int) x, (int) y, width, height, null);
+                g.drawImage(img.get(i).getImage(), (int) x, (int) y, width, height, null);
             }
 
             x += xOffset;
