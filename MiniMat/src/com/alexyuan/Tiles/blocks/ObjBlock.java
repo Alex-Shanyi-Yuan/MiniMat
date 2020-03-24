@@ -15,9 +15,13 @@ public class ObjBlock extends Block {
 	}
 
 	@Override
-	public Boolean update(AABB p) {
+	public boolean update(AABB p) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public boolean isInside(AABB p) {
+		return false;
 	}
 	
 	public void render(Graphics2D g) {

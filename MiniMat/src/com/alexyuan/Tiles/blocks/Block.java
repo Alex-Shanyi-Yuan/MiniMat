@@ -21,9 +21,14 @@ public abstract class Block {
         this.h = h;
     }
 	
-	public abstract Boolean update(AABB p);
+	public abstract boolean update(AABB p);
+	public abstract boolean isInside(AABB p);
 	
 	public void render(Graphics2D g) {
 		g.drawImage(img.getImage(), (int) pos.getWorldVar().getX(), (int) pos.getWorldVar().getY(), w, h, null);
+	}
+	
+	public Vector2f getPos() {
+		return pos;
 	}
 }

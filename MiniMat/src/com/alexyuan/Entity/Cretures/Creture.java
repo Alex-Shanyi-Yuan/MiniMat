@@ -4,14 +4,27 @@ import com.alexyuan.Entity.Entity;
 import com.alexyuan.Graphics.Animation;
 import com.alexyuan.LoadFile.Sprite;
 import com.alexyuan.LoadFile.SpriteSheet;
+import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
+import com.alexyuan.util.TileCollision;
 
 public abstract class Creture extends Entity {
 
 	public static final int DEFAULT_HEALTH = 100;
 	public static final int DEFAULT_CRETURE_SIZE = 64;
 	
-    protected float maxSpeed = 4.0f;
+	public static final int ATTACK = 5;
+    public static final int FALLEN = 4;
+    public static final int UP = 3;
+    public static final int DOWN = 2;
+    public static final int LEFT = 1;
+    public static final int RIGHT = 0;
+    
+    protected boolean up,down,left,right,attact,fallen;
+	
+    protected TileCollision tc;
+    
+    protected float maxSpeed = 3.0f;
 	protected int health;
 	protected float speed;
 	protected float dx, dy;
@@ -20,11 +33,10 @@ public abstract class Creture extends Entity {
 	protected int currentAnimation;
 	protected int currentDirection = RIGHT;
 	
-	protected boolean up,down,left,right,attact,fallen;
-	
 	public Creture(SpriteSheet sprite, Vector2f origin, int size) {
 		super(sprite, origin, size);
-
+		
+		tc = new TileCollision(this);
 		ani = new Animation();
 		setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 10);
 		
@@ -53,17 +65,28 @@ public abstract class Creture extends Entity {
             }
         }else if (up) {
             if ((currentAnimation != UP || ani.getDelay() == -1)) {
-                setAnimation(UP, sprite.getSpriteArray(UP), 5);
+                setAnimation(UP, sprite.getSpriteArray(UP), 10);
             }
         } else if (down) {
             if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
-                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 5);
+                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 10);
             }
         } else if (fallen) {
             if (currentAnimation != FALLEN || ani.getDelay() == -1) {
                 setAnimation(FALLEN, sprite.getSpriteArray(FALLEN), 15);
             }
         }
+        else {
+//            if(!attacking && currentAnimation > 4) {
+//                setAnimation(currentAnimation - ATTACK, sprite.getSpriteArray(currentAnimation - ATTACK), -1);
+//            } else if(!attacking) {
+//                if(hasIdle && currentAnimation != IDLE) {
+//                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
+//                } else if(!hasIdle) {
+                    setAnimation(currentAnimation, sprite.getSpriteArray(currentAnimation), -1);
+//                }
+            }
+        
 	}
 	
 	public void move() {
@@ -129,10 +152,15 @@ public abstract class Creture extends Entity {
 	    }
 	}
 
+	public void setFallen(boolean b) {
+		fallen = b;
+	}
 	
+	public AABB getBounds() {
+		return bounds;
+	}
 	public void update() {
         animate();
         ani.update();
     }
-
 }

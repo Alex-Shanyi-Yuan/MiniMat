@@ -14,7 +14,7 @@ public class PlayState extends GameState{
 
 	private Player player;
 	private TileManager tm;
-	private Vector2f map;
+	private static Vector2f map;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -23,12 +23,13 @@ public class PlayState extends GameState{
 		Vector2f.setWorldVar(map.getX(), map.getY());
 		
 		tm = new TileManager("resources/TiledMap/tilemap.xml");
-		player = new Player(Textures.getPlayer(),new Vector2f(600 - 20,350 - 20));
+		player = new Player(Textures.getPlayer(),new Vector2f(600 - 32,350 - 32));
 		
 	}
 
 	@Override
 	public void updata() {
+		Vector2f.setWorldVar(map.getX(), map.getY());
 		player.update();
 	}
 
@@ -41,6 +42,10 @@ public class PlayState extends GameState{
 	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {
 		player.input(mouse, key);		
+	}
+	
+	public static Vector2f getMap() {
+		return map;
 	}
 
 

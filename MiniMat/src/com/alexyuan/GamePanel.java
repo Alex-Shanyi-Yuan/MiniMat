@@ -119,14 +119,5 @@ public class GamePanel extends Canvas implements Runnable{
 
 	public KeyHandler getKey() {
 		return key;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
+	}	
 }

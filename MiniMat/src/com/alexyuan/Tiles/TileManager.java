@@ -24,7 +24,7 @@ public class TileManager {
 	
 	public TileManager(String path) {
 		tm = new ArrayList<TileMap>();
-		addTileMap(path, 40, 40);
+		addTileMap(path, 64, 64);
 	}
 	
 	private void addTileMap(String path, int blockWidth, int blockHeight) {

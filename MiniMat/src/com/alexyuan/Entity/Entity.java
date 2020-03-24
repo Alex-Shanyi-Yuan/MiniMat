@@ -4,24 +4,21 @@ import java.awt.Graphics2D;
 
 import com.alexyuan.Graphics.Animation;
 import com.alexyuan.LoadFile.SpriteSheet;
+import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
+import com.alexyuan.util.TileCollision;
 
 public abstract class Entity {
 	protected int size;
 	protected Vector2f pos;
 	protected Animation ani;
 	protected SpriteSheet sprite;
-	
-	public static final int ATTACK = 5;
-    public static final int FALLEN = 4;
-    public static final int UP = 3;
-    public static final int DOWN = 2;
-    public static final int LEFT = 1;
-    public static final int RIGHT = 0;
+	protected AABB bounds;
     
 	public Entity(SpriteSheet sprite,Vector2f origin, int size) {
+		this.bounds = new AABB(origin, size, size);
 		this.pos = origin;
 		this.size = size;
 		this.sprite = sprite;
@@ -33,6 +30,9 @@ public abstract class Entity {
 
 	public void update() {
 		
-	}	
+	}
 	
+	public AABB getBounds() {
+		return bounds;
+	}
 }

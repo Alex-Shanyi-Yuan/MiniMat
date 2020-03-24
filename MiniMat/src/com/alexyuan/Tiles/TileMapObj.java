@@ -1,6 +1,7 @@
 package com.alexyuan.Tiles;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
 
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
@@ -10,7 +11,7 @@ import com.alexyuan.Tiles.blocks.ObjBlock;
 
 public class TileMapObj extends TileMap {
 
-	private static Block[] event_blocks;
+	private static HashMap<String, Block> two_blocks;
 
     private int tileWidth, tileHeight, width, height;
 	
@@ -24,7 +25,7 @@ public class TileMapObj extends TileMap {
         this.height = height;	
         
 		Block tempBlock;
-        event_blocks = new Block[width * height];
+        two_blocks = new HashMap<String, Block>();
 
         String[] block = data.split(",");
         for(int i = 0; i < (width * height); i++) {
@@ -36,7 +37,7 @@ public class TileMapObj extends TileMap {
                  } else {
                      tempBlock = new ObjBlock(sprite.getSprite((int) ((temp - 1) % tileColumns), (int) ((temp - 1) / tileColumns) ), new Vector2f((int) (i % width) * tileWidth, (int) (i / height) * tileHeight), tileWidth, tileHeight);
                  }
-                 event_blocks[i] = tempBlock;
+                 two_blocks.put(String.valueOf(((int) (i % width)) + "," + String.valueOf((int) (i / height) )), tempBlock);
              }
         }
 	}
@@ -44,14 +45,13 @@ public class TileMapObj extends TileMap {
 	@Override
 	public void render(Graphics2D g) {
 		
-		for(Block block : event_blocks) {
-			if(block != null)
+		for(Block block : two_blocks.values()) {
 			block.render(g);
 		}
 	}
 	
-	public static Block[] getEventBlocks() {
-		return event_blocks;
+	public static HashMap<String,Block> getTwoBlock() {
+		return two_blocks;
 	}
 
 }

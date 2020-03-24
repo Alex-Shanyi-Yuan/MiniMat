@@ -14,8 +14,12 @@ public class NormBlock extends Block {
 	}
 
 	@Override
-	public Boolean update(AABB p) {
+	public boolean update(AABB p) {
 		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public boolean isInside(AABB p) {
 		return false;
 	}
 	

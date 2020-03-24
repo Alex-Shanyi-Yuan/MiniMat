@@ -14,8 +14,8 @@ public class HoleBlock extends Block {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Boolean update(AABB p) {
-		// TODO Auto-generated method stub
+	public boolean update(AABB p) {
+		System.out.println("in Hole");
 		return false;
 	}
 	
@@ -25,4 +25,14 @@ public class HoleBlock extends Block {
 		g.drawRect((int) pos.getWorldVar().getX(), (int) pos.getWorldVar().getY(), w, h);
 	}
 
+	public boolean isInside(AABB p) {
+
+        if(p.getPos().getX() + p.getXOffset() < pos.getX()) return false;
+        if(p.getPos().getY() + p.getYOffset() < pos.getY()) return false;
+        if(w + pos.getX() < p.getWidth() + (p.getPos().getX() + p.getXOffset())) return false;
+        if(h + pos.getY() < p.getHeight() + (p.getPos().getY() + p.getYOffset())) return false;
+        
+        return true;
+    }
+	
 }
