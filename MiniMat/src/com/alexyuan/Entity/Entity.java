@@ -28,9 +28,7 @@ public abstract class Entity {
 	
 	public abstract void input(MouseHandler mouse, KeyHandler key);
 
-	public void update() {
-		
-	}
+	public abstract void update();
 	
 	public AABB getBounds() {
 		return bounds;

@@ -117,5 +117,9 @@ public class Player extends Creture{
 	            left = false;
 	        }
 	}
+	
+	public Vector2f getPos() {
+		return pos;
+	}
 
 }

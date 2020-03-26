@@ -49,7 +49,7 @@ public class TileCollision {
 		if(block.isInside(creture.getBounds())) {
 			creture.setFallen(true);
 			return false;
-		}else if((nextXt == yt + 1 ) || (nextXt == xt + 1)) {
+		}else if((nextYt == yt + 1 ) || (nextXt == xt + 1) || (nextYt == yt - 1) || (nextXt == xt - 1)) {
 			if(TileMapObj.getTwoBlock().containsKey(String.valueOf(nextXt) + "," + String.valueOf(nextYt))) {
 				if(creture.getBounds().getPos().getX() > block.getPos().getX())
 					creture.setFallen(true);

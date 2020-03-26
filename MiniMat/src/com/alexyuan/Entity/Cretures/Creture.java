@@ -24,11 +24,11 @@ public abstract class Creture extends Entity {
 	
     protected TileCollision tc;
     
-    protected float maxSpeed = 3.0f;
+    protected float maxSpeed;
 	protected int health;
 	protected float speed;
 	protected float dx, dy;
-	protected float acc = 2f;
+	protected float acc;
 	protected float deacc = 0.3f;
 	protected int currentAnimation;
 	protected int currentDirection = RIGHT;
