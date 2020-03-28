@@ -20,7 +20,7 @@ public abstract class Creture extends Entity {
     public static final int LEFT = 1;
     public static final int RIGHT = 0;
     
-    protected boolean up,down,left,right,attact,fallen;
+    protected boolean up, down, left, right, attack, attacking, canAttack, fallen, xCol, yCol;
 	
     protected TileCollision tc;
     
@@ -33,8 +33,13 @@ public abstract class Creture extends Entity {
 	protected int currentAnimation;
 	protected int currentDirection = RIGHT;
 	
+	protected AABB hitBounds;
+	
 	public Creture(SpriteSheet sprite, Vector2f origin, int size) {
 		super(sprite, origin, size);
+		
+		hitBounds = new AABB(origin, size, size);
+		hitBounds.setXOffset(size / 2);
 		
 		tc = new TileCollision(this);
 		ani = new Animation();
@@ -84,10 +89,10 @@ public abstract class Creture extends Entity {
 //                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
 //                } else if(!hasIdle) {
                     setAnimation(currentAnimation, sprite.getSpriteArray(currentAnimation), -1);
-//                }
-            }
-        
-	}
+                }
+//            }
+        }
+//	}
 	
 	public void move() {
 		
@@ -152,6 +157,22 @@ public abstract class Creture extends Entity {
 	    }
 	}
 
+	private void setHitBoxDirection() {
+        if (up && !attacking) {
+            hitBounds.setXOffset((size - hitBounds.getWidth()) / 2);
+            hitBounds.setYOffset(-hitBounds.getHeight() / 2 + hitBounds.getXOffset());
+        } else if (down && !attacking) {
+            hitBounds.setXOffset((size - hitBounds.getWidth()) / 2);
+            hitBounds.setYOffset(hitBounds.getHeight() / 2 + hitBounds.getXOffset());
+        } else if (left && !attacking) {
+            hitBounds.setYOffset((size - hitBounds.getHeight()) / 2);
+            hitBounds.setXOffset(-hitBounds.getWidth() / 2 + hitBounds.getYOffset()); 
+        } else if (right && !attacking) {
+            hitBounds.setYOffset((size - hitBounds.getHeight()) / 2);
+            hitBounds.setXOffset(hitBounds.getWidth() / 2 + hitBounds.getYOffset());
+        }
+    }
+	
 	public void setFallen(boolean b) {
 		fallen = b;
 	}
@@ -159,8 +180,45 @@ public abstract class Creture extends Entity {
 	public AABB getBounds() {
 		return bounds;
 	}
+	
+	public Vector2f getPos() {
+		return pos;
+	}
+	
+	public float getDx() {
+		return dx;
+	}
+	
+	public float getDy() {
+		return dy;
+	}
+	
+	public float getAcc() {
+		return acc;
+	}
+	
+	public float getSize() {
+		return size;
+	}
+	
+	public boolean getXCol() {
+		return xCol;
+	}
+	
+	public boolean getYCol() {
+		return yCol;
+	}
+	
+	public float getDeacc() {
+		return deacc;
+	}
+	
+	public float getMaxSpeed() {
+		return maxSpeed;
+	}
 	public void update() {
         animate();
         ani.update();
+        setHitBoxDirection();
     }
 }

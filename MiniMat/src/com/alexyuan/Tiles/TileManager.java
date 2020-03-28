@@ -13,21 +13,25 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.alexyuan.LoadFile.SpriteSheet;
+import com.alexyuan.util.Camera;
 
 public class TileManager {
 
 	private ArrayList<TileMap> tm; 
+	private Camera cam;
 	
 	public TileManager() {
 		tm = new ArrayList<TileMap>();	 
 	}
 	
-	public TileManager(String path) {
+	public TileManager(String path, Camera cam) {
 		tm = new ArrayList<TileMap>();
-		addTileMap(path, 64, 64);
+		addTileMap(path, 64, 64, cam);
 	}
 	
-	private void addTileMap(String path, int blockWidth, int blockHeight) {
+	private void addTileMap(String path, int blockWidth, int blockHeight, Camera cam) {
+		this.cam = cam;
+		
 		String imagePath;
 
         int width = 0;
@@ -77,7 +81,7 @@ public class TileManager {
                 }
             }
 
-//            cam.setLimit(width * blockWidth, height * blockHeight);
+            cam.setLimit(width * blockWidth, height * blockHeight);
         } catch(Exception e) {
             System.out.println("ERROR - TILEMANAGER: can not read tilemap:");
             e.printStackTrace();
@@ -86,11 +90,11 @@ public class TileManager {
 	}
 	
 	public void render(Graphics2D g) {
-//        if(cam == null)
-//            return;
-//            
+        if(cam == null)
+            return;
+            
         for(int i = 0; i < tm.size(); i++) {
-            tm.get(i).render(g);
+            tm.get(i).render(g, cam.getBounds());
         }
     }
 }

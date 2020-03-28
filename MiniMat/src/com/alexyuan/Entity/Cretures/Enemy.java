@@ -80,6 +80,9 @@ public class Enemy extends Creture{
         }
     }
 
+	public void destroy() {
+		
+	}
 	
 	public void update(Player player) {
 		super.update();
@@ -97,7 +100,7 @@ public class Enemy extends Creture{
 				sense.getPos().addY(dy);
 				pos.addY(dy);
 			}
-		}
+		}else destroy();
 	}
 	
 	

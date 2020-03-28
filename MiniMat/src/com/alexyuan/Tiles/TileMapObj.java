@@ -1,9 +1,9 @@
 package com.alexyuan.Tiles;
 
 import java.awt.Graphics2D;
-import java.util.HashMap;
 
 import com.alexyuan.LoadFile.SpriteSheet;
+import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.Tiles.blocks.Block;
 import com.alexyuan.Tiles.blocks.HoleBlock;
@@ -11,21 +11,23 @@ import com.alexyuan.Tiles.blocks.ObjBlock;
 
 public class TileMapObj extends TileMap {
 
-	private static HashMap<String, Block> two_blocks;
+    private static Block[] event_blocks;
 
-    private int tileWidth, tileHeight, width, height;
-	
-	public TileMapObj(String data, SpriteSheet sprite, int width, int height, int tileWidth, int tileHeight,
-			int tileColumns) {
-		
-		this.tileWidth = tileWidth;
+    private int tileWidth;
+    private int tileHeight;
+
+    public static int width;
+    public static int height;
+
+    public TileMapObj(String data, SpriteSheet sprite, int width, int height, int tileWidth, int tileHeight, int tileColumns) {
+        Block tempBlock;
+        event_blocks = new Block[width * height];
+
+        this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
 
-        this.width = width;
-        this.height = height;	
-        
-		Block tempBlock;
-        two_blocks = new HashMap<String, Block>();
+        TileMapObj.width = width;
+        TileMapObj.height = height;
 
         String[] block = data.split(",");
         for(int i = 0; i < (width * height); i++) {
@@ -37,21 +39,22 @@ public class TileMapObj extends TileMap {
                  } else {
                      tempBlock = new ObjBlock(sprite.getSprite((int) ((temp - 1) % tileColumns), (int) ((temp - 1) / tileColumns) ), new Vector2f((int) (i % width) * tileWidth, (int) (i / height) * tileHeight), tileWidth, tileHeight);
                  }
-                 two_blocks.put(String.valueOf(((int) (i % width)) + "," + String.valueOf((int) (i / height) )), tempBlock);
+                 event_blocks[i] = tempBlock;
              }
         }
-	}
+    }
 
-	@Override
-	public void render(Graphics2D g) {
-		
-		for(Block block : two_blocks.values()) {
-			block.render(g);
-		}
-	}
-	
-	public static HashMap<String,Block> getTwoBlock() {
-		return two_blocks;
-	}
+    public static Block[] getBlocks() { return event_blocks; }
 
+    public void render(Graphics2D g, AABB cam) {
+        int x = (int) ((cam.getPos().getX()) / tileWidth);
+        int y = (int) ((cam.getPos().getY()) / tileHeight);
+
+        for(int i = x; i < x + (cam.getWidth() / tileWidth); i++) {
+            for(int j = y; j < y + (cam.getHeight() / tileHeight); j++) {
+                if(i + (j * height) > -1 && i + (j * height) < event_blocks.length && event_blocks[i + (j * height)] != null)
+                    event_blocks[i + (j * height)].render(g);
+            }
+        }
+    }
 }

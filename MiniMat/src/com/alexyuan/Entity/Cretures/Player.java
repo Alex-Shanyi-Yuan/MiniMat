@@ -3,7 +3,6 @@ package com.alexyuan.Entity.Cretures;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import com.alexyuan.GamePanel;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.States.PlayState;
@@ -23,21 +22,29 @@ public class Player extends Creture{
 		bounds.setYOffset(40);
 	}
 
-	@Override
-	public void update() {
+	public void update(Creture enemy) {
         super.update();
 
+        if(hitBounds.collides(enemy.getBounds()) && attack)
+        	System.out.println("hit");
+        
         if(!fallen) {
 			move();
 			if(!tc.collisionTile(dx, 0)) {
-				PlayState.getMap().addX(dx);
 				pos.addX(dx);
+				xCol = false;
 			}
+			else 
+				xCol = true;
 			if(!tc.collisionTile(0, dy)) {
-				PlayState.getMap().addY(dy);
 				pos.addY(dy);
+				yCol = false;
 			}
+			else
+				yCol = true;
         }else if(ani.hasPlayedOnce()) {
+        	xCol = true;
+        	yCol = true;
         	resetPosition();
         	fallen = false;
         }
@@ -46,22 +53,34 @@ public class Player extends Creture{
 	private void resetPosition() {
 		pos.setX(600 - 32);
 		PlayState.getMap().setX(0);
+		PlayState.getCam().getPos().setX(0);
 		pos.setY(350 - 32);
 		PlayState.getMap().setY(0);
+		PlayState.getCam().getPos().setY(0);
+		
+		dx = 0;
+		dy = 0;
 		
 		setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 10);
 	}
 	
 	@Override
 	public void render(Graphics2D g) {		
-		g.setColor(Color.blue);
+		g.setColor(Color.green);
 		
+		if(attack) {
+			g.setColor(Color.red);
+			g.drawRect((int) (hitBounds.getPos().getWorldVar().getX() + hitBounds.getXOffset()), (int) (hitBounds.getPos().getWorldVar().getY() + hitBounds.getYOffset()), (int) hitBounds.getWidth(), (int) hitBounds.getHeight());
+		}
 		g.drawRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() + bounds.getYOffset()), (int) bounds.getWidth(), (int) bounds.getHeight());
 		g.drawImage(ani.getImage().getImage(), (int) pos.getWorldVar().getX(), (int)pos.getWorldVar().getY(), size, size, null);
 	}
 	
 	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {
+		
+		key.getAttack().tick();
+		
 		if(!fallen) {
             if(key.getUp().isHoldDown()) {
                 up = true;
@@ -83,16 +102,15 @@ public class Player extends Creture{
             } else {
                 right = false;
             }
-
-//            if(key.attack.down && canAttack) {
-//                attack = true;
-//                attacktime = System.nanoTime();
-//            } else {
-//                if(!attacking) {
-//                    attack = false;
-//                }
-//            }
-
+            // && canAttack
+            if(key.getAttack().isClicked()) {
+                attack = true;
+                //attacktime = System.nanoTime();
+            } else {
+                if(!attacking) {
+                    attack = false;
+                }
+            }
             if(key.getShift().isHoldDown()) {
             	maxSpeed  = 6;
                 //cam.setMaxSpeed(7);

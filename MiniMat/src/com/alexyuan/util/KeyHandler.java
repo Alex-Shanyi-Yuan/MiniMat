@@ -71,6 +71,7 @@ public class KeyHandler implements KeyListener{
     private Key escape = new Key();
     private Key shift = new Key();
     private Key f1 = new Key();
+    private Key attack = new Key();
 
     public KeyHandler(GamePanel game) {
         game.addKeyListener(this);
@@ -97,6 +98,7 @@ public class KeyHandler implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_DOWN) downArrow.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_LEFT) leftArrow.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) rightArrow.toggle(pressed);
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) attack.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_E) inventory.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) escape.toggle(pressed);
@@ -162,6 +164,10 @@ public class KeyHandler implements KeyListener{
 
 	public Key getUpArrow() {
 		return upArrow;
+	}
+	
+	public Key getAttack() {
+		return attack;
 	}
 
 	public Key getDownArrow() {

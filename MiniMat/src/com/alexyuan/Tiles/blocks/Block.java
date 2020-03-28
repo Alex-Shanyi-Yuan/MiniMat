@@ -31,4 +31,12 @@ public abstract class Block {
 	public Vector2f getPos() {
 		return pos;
 	}
+	
+	public int getWidth() {
+		return w;
+	}
+	
+	public int getHeight() {
+		return h;
+	}
 }

@@ -3,21 +3,22 @@ package com.alexyuan.Tiles;
 import java.awt.Graphics2D;
 
 import com.alexyuan.LoadFile.SpriteSheet;
+import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.Tiles.blocks.Block;
 import com.alexyuan.Tiles.blocks.NormBlock;
 
 public class TileMapNorm extends TileMap {
 
-	private Block[] blocks;
+    public Block[] blocks;
 
     private int tileWidth;
     private int tileHeight;
 
     private int height;
-	
-	public TileMapNorm(String data, SpriteSheet sprite, int width, int height, int tileWidth, int tileHeight, int tileColumns) {
-		blocks = new Block[width * height];
+
+    public TileMapNorm(String data, SpriteSheet sprite, int width, int height, int tileWidth, int tileHeight, int tileColumns) {
+        blocks = new Block[width * height];
 
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -33,13 +34,21 @@ public class TileMapNorm extends TileMap {
                 //blocks[i].setMaterial(0);
             }
         }
-	}
+    }
 
-	@Override
-	public void render(Graphics2D g) {
-		for(Block block : blocks) {
-			if(block != null)block.render(g);
-		}
-	}
+    public Block[] getBlocks() { return blocks; }
+
+    public void render(Graphics2D g, AABB cam) {
+        int x = (int) ((cam.getPos().getX()) / tileWidth);
+        int y = (int) ((cam.getPos().getY()) / tileHeight);
+
+        for(int i = x; i < x + (cam.getWidth() / tileWidth); i++) {
+            for(int j = y; j < y + (cam.getHeight() / tileHeight); j++) {
+                if(i + (j * height) > -1 && i + (j * height) < blocks.length && blocks[i + (j * height)] != null) {
+                    blocks[i + (j * height)].render(g);
+                }
+            }
+        }
+    }
 
 }
