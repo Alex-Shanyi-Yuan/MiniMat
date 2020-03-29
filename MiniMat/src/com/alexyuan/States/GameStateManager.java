@@ -63,11 +63,11 @@ public class GameStateManager {
         add(state);
     }
 
-	public void update() {
+	public void update(double time) {
 		Vector2f.setWorldVar(map.getX(), map.getY());
 		for(GameState i : states) {
 			if(i != null)
-				i.updata();
+				i.updata(time);
 		}
 	}
 	

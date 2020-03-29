@@ -18,10 +18,7 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void updata() {
-		
-
-	}
+	public void updata(double time) {}
 
 	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {

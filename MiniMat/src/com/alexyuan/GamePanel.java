@@ -73,7 +73,7 @@ public class GamePanel extends Canvas implements Runnable{
         	
         	if(deltaTime >= 1) {
         		deltaTime --;
-        		update();
+        		update(now);
         		input(mouse, key);
         		ticks++;
         	}
@@ -90,8 +90,8 @@ public class GamePanel extends Canvas implements Runnable{
         }
     }
 	
-	private void update() {
-		gsm.update();
+	private void update(double time) {
+		gsm.update(time);
 	}
 	
 	private void input(MouseHandler mouse, KeyHandler key) {

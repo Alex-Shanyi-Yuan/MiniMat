@@ -13,7 +13,7 @@ public class GameOverState extends GameState {
 	}
 
 	@Override
-	public void updata() {
+	public void updata(double time) {
 		// TODO Auto-generated method stub
 
 	}

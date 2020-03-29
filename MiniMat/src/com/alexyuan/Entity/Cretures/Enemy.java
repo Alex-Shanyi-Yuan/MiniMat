@@ -2,55 +2,45 @@ package com.alexyuan.Entity.Cretures;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
+import com.alexyuan.Entity.Entity;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
-import com.alexyuan.util.KeyHandler;
-import com.alexyuan.util.MouseHandler;
+import com.alexyuan.util.Camera;
 
-public class Enemy extends Creture{
+public abstract class Enemy extends Creture {
 
-	private AABB sense;
-	private int r;
-	
-	public Enemy(SpriteSheet sprite, Vector2f origin, int size) {
-		super(sprite, origin, size);
-		
-		acc = 1f;
-		maxSpeed = 3f;
-		r = 500;
-		
-		bounds.setWidth(42);
-		bounds.setHeight(20);
-		bounds.setXOffset(12);
-		bounds.setYOffset(40);
-		
-		sense = new AABB(new Vector2f(origin.getX() + size / 2 - r / 2, origin.getY() + size / 2 - r / 2), r);
-	}
+    protected AABB sense;
+    protected int r_sense;
 
-	@Override
-	public void render(Graphics2D g) {
-		g.setColor(Color.green);
-		g.drawRect( (int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() + bounds.getYOffset()), (int) bounds.getWidth(), (int) bounds.getHeight());
-		
-		g.setColor(Color.blue);
-		g.drawOval((int) sense.getPos().getWorldVar().getX(), (int) sense.getPos().getWorldVar().getY(), r, r);
-		
-		g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()), (int) (pos.getWorldVar().getY()), size, size, null);	
+    protected AABB attackrange;
+    protected int r_attackrange;
 
-	}
+    private Camera cam;
 
-	@Override
-	public void input(MouseHandler mouse, KeyHandler key) {
-		// TODO Auto-generated met hod stub
-		
-	}
-	
-	public void chase(Player player) {
+    protected int xOffset;
+    protected int yOffset;
+
+    protected ArrayList<Entity> collisions;
+
+    public Enemy(Camera cam, SpriteSheet sprite, Vector2f origin, int size) {
+        super(sprite, origin, size);
+        this.cam = cam;
+
+        bounds.setWidth(size / 2);
+        bounds.setHeight(size / 2 - yOffset);
+        bounds.setXOffset(size / 2 - xOffset);
+        bounds.setYOffset(size / 2 + yOffset);
+
+        sense = new AABB(new Vector2f(origin.getX() + size / 2 - r_sense / 2, origin.getY() + size / 2 - r_sense / 2), r_sense);
+        attackrange = new AABB(new Vector2f(origin.getX() + bounds.getXOffset() + bounds.getWidth() / 2 - r_attackrange / 2 , origin.getY() + bounds.getYOffset() + bounds.getHeight() / 2 - r_attackrange / 2 ), r_attackrange);
+    }
+
+    public void chase(Player player) {
         AABB playerBounds = player.getBounds();
-        //&& !attackrange.colCircleBox(playerBounds)
-        if (sense.colCircleBox(playerBounds)) {
+        if (sense.colCircleBox(playerBounds) && !attackrange.colCircleBox(playerBounds)) {
             if (pos.getY() > player.getPos().getY() + 1) {
                 up = true;
             } else {
@@ -80,29 +70,72 @@ public class Enemy extends Creture{
         }
     }
 
-	public void destroy() {
-		
-	}
-	
-	public void update(Player player) {
-		super.update();
-		
-		chase(player);
-		move();
-		
-		if(!fallen) {
-			if(!tc.collisionTile(dx, 0)) {
-				sense.getPos().addX(dx);
-				pos.addX(dx);
-			}
+    public void update(Player player, double time) {
+        if(cam.getBounds().collides(this.bounds)) {
+            super.update(time);
+            chase(player);
+            move();
+
+            if(teleported) {
+                teleported = false;
+                
+            bounds.setWidth(size / 2);
+            bounds.setHeight(size / 2 - yOffset);
+            bounds.setXOffset(size / 2 - xOffset);
+            bounds.setYOffset(size / 2 + yOffset);
+
+            hitBounds = new AABB(pos, size, size);
+            hitBounds.setXOffset(size / 2);
+
+            sense = new AABB(new Vector2f(pos.getX() + size / 2 - r_sense / 2, pos.getY() + size / 2 - r_sense / 2), r_sense);
+            attackrange = new AABB(new Vector2f(pos.getX() + bounds.getXOffset() + bounds.getWidth() / 2 - r_attackrange / 2 , pos.getY() + bounds.getYOffset() + bounds.getHeight() / 2 - r_attackrange / 2 ), r_attackrange);
+            }
+
+            if(attackrange.colCircleBox(player.getBounds()) && !isInvincible) {
+                attack = true;
+                player.setHealth(player.getHealth() - damage, 5f * getDirection(), currentDirection == UP || currentDirection == DOWN);
+            } else {
+                attack = false;
+            }
+
+            if (!fallen) {
+                if (!tc.collisionTile(dx, 0)) {
+                    sense.getPos().addX(dx);
+                    attackrange.getPos().addX(dx);
+                    pos.addX(dx);
+                }
+                if (!tc.collisionTile(0, dy)) {
+                    sense.getPos().addY(dy);
+                    attackrange.getPos().addY(dy);
+                    pos.addY(dy);
+                }
+            } else {
+                if(ani.hasPlayedOnce()) {
+                    die = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void render(Graphics2D g) {
+        if(cam.getBounds().collides(this.bounds)) { 
+
+            //if(isInvincible) 
+            if(useRight && left) {
+                g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()) + size, (int) (pos.getWorldVar().getY()), -size, size, null);
+            } else {
+                g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()), (int) (pos.getWorldVar().getY()), size, size, null);
+            }
+            
 			
-			if(!tc.collisionTile(0, dy)) {
-				sense.getPos().addY(dy);
-				pos.addY(dy);
-			}
-		}else destroy();
-	}
-	
-	
-	
+            // Health Bar UI
+            g.setColor(Color.red);
+			g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() - 5), 24, 5);
+			
+			g.setColor(Color.green);
+            g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() - 5), (int) (24 * healthPercent), 5);
+            
+        }
+    }
 }

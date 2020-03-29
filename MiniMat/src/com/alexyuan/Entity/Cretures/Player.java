@@ -2,6 +2,7 @@ package com.alexyuan.Entity.Cretures;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
@@ -11,22 +12,53 @@ import com.alexyuan.util.MouseHandler;
 
 public class Player extends Creture{
 
+	private ArrayList<Enemy> enemy;
+	
 	public Player(SpriteSheet sprite, Vector2f pos) {
 		super(sprite ,pos, Creture.DEFAULT_CRETURE_SIZE);
 		acc = 2f;
 		maxSpeed = 4f;
+		deacc = 0.3f;
+		
+		damage = 10;
 		
 		bounds.setWidth(42);
 		bounds.setHeight(20);
 		bounds.setXOffset(12);
 		bounds.setYOffset(40);
+		
+		hitBounds.setWidth(42);
+        hitBounds.setHeight(42);
+        
+        ani.setNumFrames(4, UP);
+        ani.setNumFrames(4, DOWN);
+        ani.setNumFrames(4, ATTACK + RIGHT);
+        ani.setNumFrames(4, ATTACK + LEFT);
+        ani.setNumFrames(4, ATTACK + UP);
+        ani.setNumFrames(4, ATTACK + DOWN);
+        
+        hasIdle = false;
+        health = 500;
+		maxHealth = 500;
+		
+		enemy = new ArrayList<Enemy>();
 	}
 
-	public void update(Creture enemy) {
-        super.update();
+	public void setTargetEnemy(Enemy enemy) { 
+        this.enemy.add(enemy);
+    }
+	
+	public void update(double time) {
+        super.update(time);
 
-        if(hitBounds.collides(enemy.getBounds()) && attack)
-        	System.out.println("hit");
+        attacking = isAttacking(time);
+        
+        for(int i = 0; i < enemy.size(); i++) {
+            if(attacking) {
+                enemy.get(i).setHealth(enemy.get(i).getHealth() - damage, force * getDirection(), currentDirection == UP || currentDirection == DOWN);
+                enemy.remove(i);
+            }
+        }
         
         if(!fallen) {
 			move();
@@ -102,10 +134,9 @@ public class Player extends Creture{
             } else {
                 right = false;
             }
-            // && canAttack
-            if(key.getAttack().isClicked()) {
+            if(key.getAttack().isClicked() && canAttack) {
                 attack = true;
-                //attacktime = System.nanoTime();
+                attackTime = System.nanoTime();
             } else {
                 if(!attacking) {
                     attack = false;
@@ -113,10 +144,10 @@ public class Player extends Creture{
             }
             if(key.getShift().isHoldDown()) {
             	maxSpeed  = 6;
-                //cam.setMaxSpeed(7);
+                PlayState.getCam().updateCam(acc, maxSpeed, deacc);
             } else {
             	maxSpeed  = 4;
-                //cam.setMaxSpeed(4);
+                PlayState.getCam().updateCam(acc, maxSpeed, deacc);
             }
 
             if(up && down) {

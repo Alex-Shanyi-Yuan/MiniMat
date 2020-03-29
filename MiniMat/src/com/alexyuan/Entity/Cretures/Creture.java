@@ -13,25 +13,37 @@ public abstract class Creture extends Entity {
 	public static final int DEFAULT_HEALTH = 100;
 	public static final int DEFAULT_CRETURE_SIZE = 64;
 	
-	public static final int ATTACK = 5;
-    public static final int FALLEN = 4;
-    public static final int UP = 3;
-    public static final int DOWN = 2;
-    public static final int LEFT = 1;
-    public static final int RIGHT = 0;
+	public int ATTACK = 5;
+    public int FALLEN = 4;
+    public int UP = 3;
+    public int DOWN = 2;
+    public int LEFT = 1;
+    public int RIGHT = 0;
+    public int IDLE = 6;
     
-    protected boolean up, down, left, right, attack, attacking, canAttack, fallen, xCol, yCol;
+    protected boolean up, down, left, right,
+    				  attack, attacking, canAttack, hasIdle, 
+    				  fallen,
+    				  xCol, yCol,
+    				  isInvincible, die, useRight;
 	
     protected TileCollision tc;
     
     protected float maxSpeed;
 	protected int health;
+	protected int maxHealth;
+	protected int damage;
+	protected float healthPercent;
+	protected int attackSpeed = 1050; // in milliseconds
+    protected int attackDuration = 650; // in milliseconds
 	protected float speed;
 	protected float dx, dy;
 	protected float acc;
-	protected float deacc = 0.3f;
+	protected float deacc;
 	protected int currentAnimation;
 	protected int currentDirection = RIGHT;
+	
+	protected long attackTime, invincibletime;
 	
 	protected AABB hitBounds;
 	
@@ -59,8 +71,20 @@ public abstract class Creture extends Entity {
     }
 
 	public void animate() {
-		
-		if (left) {
+
+        if(attacking) {
+            if(currentAnimation < 5) {
+                setAnimation(currentAnimation + ATTACK, sprite.getSpriteArray(currentAnimation + ATTACK), attackDuration / 100);
+            }
+        } else if (up) {
+            if ((currentAnimation != UP || ani.getDelay() == -1)) {
+                setAnimation(UP, sprite.getSpriteArray(UP), 5);
+            }
+        } else if (down) {
+            if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
+                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 5);
+            }
+        } else if (left) {
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
                 setAnimation(LEFT, sprite.getSpriteArray(LEFT), 5);
             }
@@ -68,31 +92,23 @@ public abstract class Creture extends Entity {
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
                 setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 5);
             }
-        }else if (up) {
-            if ((currentAnimation != UP || ani.getDelay() == -1)) {
-                setAnimation(UP, sprite.getSpriteArray(UP), 10);
-            }
-        } else if (down) {
-            if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
-                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 10);
-            }
         } else if (fallen) {
             if (currentAnimation != FALLEN || ani.getDelay() == -1) {
                 setAnimation(FALLEN, sprite.getSpriteArray(FALLEN), 15);
             }
         }
         else {
-//            if(!attacking && currentAnimation > 4) {
-//                setAnimation(currentAnimation - ATTACK, sprite.getSpriteArray(currentAnimation - ATTACK), -1);
-//            } else if(!attacking) {
-//                if(hasIdle && currentAnimation != IDLE) {
-//                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
-//                } else if(!hasIdle) {
+            if(!attacking && currentAnimation > 4) {
+                setAnimation(currentAnimation - ATTACK, sprite.getSpriteArray(currentAnimation - ATTACK), -1);
+            } else if(!attacking) {
+                if(hasIdle && currentAnimation != IDLE) {
+                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
+                } else if(!hasIdle) {
                     setAnimation(currentAnimation, sprite.getSpriteArray(currentAnimation), -1);
                 }
-//            }
+            }
         }
-//	}
+    }
 	
 	public void move() {
 		
@@ -173,52 +189,81 @@ public abstract class Creture extends Entity {
         }
     }
 	
-	public void setFallen(boolean b) {
-		fallen = b;
-	}
+	protected boolean isAttacking(double time) {
+
+        if((attackTime / 1000000) > ((time / 1000000) - attackSpeed)) {
+            canAttack = false;
+        } else {
+            canAttack = true;
+        }
+
+        if((attackTime / 1000000) + attackDuration > (time / 1000000)) {
+            return true;
+        }
+
+        return false;
+    }
 	
-	public AABB getBounds() {
-		return bounds;
-	}
+	public void addForce(float a, boolean vertical) {
+        if(!vertical) {
+            dx -= a; 
+        } else {
+            dy -= a;
+        }
+    }
 	
-	public Vector2f getPos() {
-		return pos;
-	}
+	public void setHealth(int i, float f, boolean dir) {
+        if(!isInvincible) {
+            health = i;
+            isInvincible = true;
+            invincibletime = System.nanoTime();
+            if(health <= 0) {
+                die = true;
+            }
+
+            addForce(f, dir);
+
+            healthPercent = (float) health / (float) maxHealth;
+        }
+    }
 	
-	public float getDx() {
-		return dx;
-	}
-	
-	public float getDy() {
-		return dy;
-	}
-	
-	public float getAcc() {
-		return acc;
-	}
-	
-	public float getSize() {
-		return size;
-	}
-	
-	public boolean getXCol() {
-		return xCol;
-	}
-	
-	public boolean getYCol() {
-		return yCol;
-	}
-	
-	public float getDeacc() {
-		return deacc;
-	}
-	
-	public float getMaxSpeed() {
-		return maxSpeed;
-	}
-	public void update() {
+	public void update(double time) {
         animate();
         ani.update();
         setHitBoxDirection();
     }
+	
+	public void setFallen(boolean b) { fallen = b; }
+	
+	public AABB getBounds() { return bounds; }
+	
+	public Vector2f getPos() { return pos; }
+	
+	public float getDx() { return dx; }
+	
+	public float getDy() { return dy; }
+	
+	public float getAcc() {	return acc;	}
+	
+	public float getSize() { return size; }
+	
+	public boolean getXCol() { return xCol;	}
+	
+	public boolean getYCol() { return yCol;	}
+	
+	public float getDeacc() { return deacc;	}
+	
+	public float getMaxSpeed() { return maxSpeed; }
+	
+	public int getHealth() { return health; }
+	
+    public float getHealthPercent() { return healthPercent; }
+    
+    public int getDirection() {
+        if(currentDirection == UP || currentDirection == LEFT) {
+            return 1;
+        }
+        return -1;
+    }
+    
 }

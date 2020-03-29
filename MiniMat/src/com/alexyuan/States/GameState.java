@@ -13,7 +13,7 @@ public abstract class GameState {
 		this.gsm = gsm;
 	}
 	
-	public abstract void updata();
+	public abstract void updata(double time);
 	
 	public abstract void input(MouseHandler mouse, KeyHandler key);
 

@@ -27,29 +27,25 @@ public class PlayState extends GameState{
 		map = new Vector2f();
 		Vector2f.setWorldVar(map.getX(), map.getY());
 		
-		cam = new Camera(new AABB(new Vector2f(0, 0), 1264, 764));
+		cam = new Camera(new AABB(new Vector2f(-1, -1), 1264, 764));
 		
 		tm = new TileManager("resources/TiledMap/tilemap.xml", cam);
 		player = new Player(Textures.getPlayer(),new Vector2f(600 - 32,350 - 32));
-		littleGirl = new Enemy(Textures.getGirl(), new Vector2f(600 - 32 + 150,350 - 32 + 150), 64);
 		
 		cam.target(player);
 	}
 
 	@Override
-	public void updata() {
+	public void updata(double time) {
 		Vector2f.setWorldVar(map.getX(), map.getY());
-		player.update(littleGirl);
+		player.update(time);
 		cam.update();
-		littleGirl.update(player);
 	}
 
 	@Override
 	public void render(Graphics2D g) {		
 		tm.render(g);
-		cam.render(g);
 		player.render(g);
-		littleGirl.render(g);
 	}
 
 	@Override

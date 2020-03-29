@@ -58,8 +58,8 @@ public class TileCollision {
     public int getTile() { return tileId; }
 
     private boolean collisionHole(float ax, float ay, float xt, float yt, Block block) {
-        int nextXt = (int) ((( (e.getPos().getY() + ax) + e.getBounds().getXOffset()) / 64) + e.getBounds().getWidth() / 64);
-        int nextYt = (int) ((( (e.getPos().getX() + ay) + e.getBounds().getYOffset()) / 64) + e.getBounds().getHeight() / 64);
+        int nextXt = (int) ((( (e.getPos().getX() + ax) + e.getBounds().getXOffset()) / 64) + e.getBounds().getWidth() / 64);
+        int nextYt = (int) ((( (e.getPos().getY() + ay) + e.getBounds().getYOffset()) / 64) + e.getBounds().getHeight() / 64);
 
         if(block.isInside(e.getBounds())) {
             e.setFallen(true);
@@ -78,7 +78,6 @@ public class TileCollision {
                 return false;
             }
         }
-
         e.setFallen(false);
         return false;
     }
