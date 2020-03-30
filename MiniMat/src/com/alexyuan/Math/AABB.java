@@ -68,21 +68,6 @@ public class AABB {
         return collides(0, 0, bBox);
     }
 
-//    public boolean collides(float dx, float dy, ArrayList<Entity> go) {
-//        boolean collides = false;
-//
-//        for(int i = 0; i < go.size(); i++) {
-//            collides = collides(dx, dy, go.get(i).getBounds());
-//            if(collides) {
-//                go.get(i).getImage().restoreDefault();
-//                go.remove(i);
-//                return collides;
-//            }
-//        }
-//
-//        return collides;
-//    }
-
     public boolean collides(float dx, float dy, AABB bBox) {
         float ax = ((pos.getX() + (xOffset)) + (this.w / 2)) + dx;
         float ay = ((pos.getY() + (yOffset)) + (this.h / 2)) + dy;
@@ -146,17 +131,13 @@ public class AABB {
 
     public boolean colCircleBox(AABB aBox) {
 
-        float dx = Math.max(aBox.getPos().getX() + aBox.getXOffset(), Math.min(pos.getX() + (r / 2), aBox.getPos().getX() + aBox.getXOffset() + aBox.getWidth()));
-        float dy = Math.max(aBox.getPos().getY() + aBox.getYOffset(), Math.min(pos.getY() + (r / 2), aBox.getPos().getY() + aBox.getYOffset() + aBox.getHeight()));
+        float dx = Math.max(aBox.getPos().getWorldVar().getX() + aBox.getXOffset(), Math.min(pos.getWorldVar().getX() + (r / 2), aBox.getPos().getWorldVar().getX() + aBox.getXOffset() + aBox.getWidth()));
+        float dy = Math.max(aBox.getPos().getWorldVar().getY() + aBox.getYOffset(), Math.min(pos.getWorldVar().getY() + (r / 2), aBox.getPos().getWorldVar().getY() + aBox.getYOffset() + aBox.getHeight()));
 
-        dx = pos.getX() + (r / 2) - dx;
-        dy = pos.getY() + (r / 2) - dy;
+        dx = pos.getWorldVar().getX() + (r / 2) - dx;
+        dy = pos.getWorldVar().getY() + (r / 2) - dy;
 
-        if(Math.sqrt(dx * dx + dy * dy) < r / 2) {
-            return true;
-        }
-
-        return false;
+        return Math.sqrt(dx * dx + dy * dy) < r / 2;
     }
 
     public float distance(Vector2f other) {

@@ -12,6 +12,7 @@ public class Textures {
 	private static BufferedImage buttonBoard = null;
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
+	private static SpriteSheet heart = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
@@ -19,6 +20,7 @@ public class Textures {
 		buttonBoard = loadImage("/resources/Texture/ButtonBoard.png");
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
 		girl = new SpriteSheet("resources/Entity/littlegirl.png", 48, 48);
+		heart = new SpriteSheet("resources/Texture/health_player.png", 17, 17);
 	}
 	
 	private BufferedImage loadImage(String path){
@@ -49,5 +51,9 @@ public class Textures {
 	
 	public static SpriteSheet getGirl() {
 		return girl;
+	}
+	
+	public static SpriteSheet getHeart() {
+		return heart;
 	}
 }

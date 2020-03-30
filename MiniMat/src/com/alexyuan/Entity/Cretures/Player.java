@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import com.alexyuan.Entity.Cretures.Enemy.Enemy;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.States.PlayState;
+import com.alexyuan.Tiles.TileManager;
+import com.alexyuan.Tiles.blocks.NormBlock;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
@@ -14,12 +17,17 @@ public class Player extends Creture{
 
 	private ArrayList<Enemy> enemy;
 	
-	public Player(SpriteSheet sprite, Vector2f pos) {
+	public Player(SpriteSheet sprite, Vector2f pos, ArrayList<Enemy> enemy) {
 		super(sprite ,pos, Creture.DEFAULT_CRETURE_SIZE);
+		
+		this.enemy = enemy;
+		
 		acc = 2f;
 		maxSpeed = 4f;
 		deacc = 0.3f;
 		
+		attackDuration = 325;
+		attackSpeed = 525;
 		damage = 10;
 		
 		bounds.setWidth(42);
@@ -40,46 +48,55 @@ public class Player extends Creture{
         hasIdle = false;
         health = 500;
 		maxHealth = 500;
-		
-		enemy = new ArrayList<Enemy>();
 	}
-
-	public void setTargetEnemy(Enemy enemy) { 
-        this.enemy.add(enemy);
-    }
 	
 	public void update(double time) {
         super.update(time);
-
+        
         attacking = isAttacking(time);
         
         for(int i = 0; i < enemy.size(); i++) {
-            if(attacking) {
+            if(attacking && hitBounds.collides(enemy.get(i).getBounds())) {
                 enemy.get(i).setHealth(enemy.get(i).getHealth() - damage, force * getDirection(), currentDirection == UP || currentDirection == DOWN);
-                enemy.remove(i);
+                
+                if(enemy.get(i).die)
+                	enemy.remove(i);
             }
         }
         
         if(!fallen) {
-			move();
-			if(!tc.collisionTile(dx, 0)) {
-				pos.addX(dx);
-				xCol = false;
-			}
-			else 
-				xCol = true;
-			if(!tc.collisionTile(0, dy)) {
-				pos.addY(dy);
-				yCol = false;
-			}
-			else
-				yCol = true;
-        }else if(ani.hasPlayedOnce()) {
-        	xCol = true;
-        	yCol = true;
-        	resetPosition();
-        	fallen = false;
+            move();
+            //&& !bounds.collides(dx, 0, ))
+            if(!tc.collisionTile(dx, 0)) {
+                //PlayState.map.x += dx;
+                pos.addX(dx);
+                xCol = false;
+            } else {
+                xCol = true;
+            }
+            //&& !bounds.collides(0, dy, go)
+            if(!tc.collisionTile(0, dy) ) {
+                //PlayState.map.y += dy;
+                pos.addY(dy);
+                yCol = false;
+            } else {
+                yCol = true;
+            }
+
+            tc.normalTile(dx, 0);
+            tc.normalTile(0, dy);
+
+        } else {
+            xCol = true;
+            yCol = true;
+            if(ani.hasPlayedOnce()) {
+                resetPosition();
+                dx = 0;
+                dy = 0;
+                fallen = false;
+            }
         }
+       
 	}
 
 	private void resetPosition() {
@@ -108,7 +125,6 @@ public class Player extends Creture{
 		g.drawImage(ani.getImage().getImage(), (int) pos.getWorldVar().getX(), (int)pos.getWorldVar().getY(), size, size, null);
 	}
 	
-	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {
 		
 		key.getAttack().tick();

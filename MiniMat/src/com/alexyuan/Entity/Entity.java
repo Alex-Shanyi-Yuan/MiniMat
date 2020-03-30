@@ -31,8 +31,6 @@ public abstract class Entity {
 	
 	public abstract void render(Graphics2D g);
 	
-	public abstract void input(MouseHandler mouse, KeyHandler key);
-	
 	public AABB getBounds() {
 		return bounds;
 	}

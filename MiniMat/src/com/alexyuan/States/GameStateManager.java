@@ -12,11 +12,11 @@ public class GameStateManager {
 	
 	protected GameState[] states;
 	
-	protected final int MENU = 0;
-	protected final int PLAY = 1;
-	protected final int PAUSE = 2;
-	protected final int GAMEOVER = 3;
-	protected final int SETTING = 4;
+	protected static final int MENU = 0;
+	protected static final int PLAY = 1;
+	protected static final int PAUSE = 2;
+	protected static final int GAMEOVER = 3;
+	protected static final int SETTING = 4;
 	protected int width, height;
     
 	private static Vector2f map;
@@ -52,6 +52,10 @@ public class GameStateManager {
         else if (state == SETTING)
         	states[SETTING] = new SettingState(this);
     
+    }
+	
+	protected boolean isStateActive(int state) {
+        return states[state] != null;
     }
 
 	protected void addAndpop(int state) {
