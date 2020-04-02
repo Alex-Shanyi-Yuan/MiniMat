@@ -13,6 +13,8 @@ public class Textures {
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
 	private static SpriteSheet heart = null;
+	private static SpriteSheet greenG = null;
+	private static SpriteSheet purpleG = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
@@ -21,6 +23,8 @@ public class Textures {
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
 		girl = new SpriteSheet("resources/Entity/littlegirl.png", 48, 48);
 		heart = new SpriteSheet("resources/Texture/health_player.png", 17, 17);
+		greenG = new SpriteSheet("resources/Entity/green_goblin.png",32, 32);
+		purpleG = new SpriteSheet("resources/Entity/purple_goblin.png",32, 32);
 	}
 	
 	private BufferedImage loadImage(String path){
@@ -28,7 +32,6 @@ public class Textures {
 			return ImageIO.read(Textures.class.getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(1);
 		}
 		return null;
 	}
@@ -55,5 +58,13 @@ public class Textures {
 	
 	public static SpriteSheet getHeart() {
 		return heart;
+	}
+	
+	public static SpriteSheet getGreenGoblin() {
+		return greenG;
+	}
+
+	public static SpriteSheet getPurpleGoblin() {
+		return purpleG;
 	}
 }

@@ -13,19 +13,13 @@ public abstract class Creture extends Entity {
 	public static final int DEFAULT_HEALTH = 100;
 	public static final int DEFAULT_CRETURE_SIZE = 64;
 	
-	public int ATTACK = 5;
-    public int FALLEN = 4;
-    public int UP = 3;
-    public int DOWN = 2;
-    public int LEFT = 1;
-    public int RIGHT = 0;
-    public int IDLE = 6;
+    protected int ATTACK, FALLEN, UP, DOWN, LEFT, RIGHT, IDLE, ANIMATIONSPEED;
     
     protected boolean up, down, left, right,
     				  attack, attacking, canAttack, hasIdle, 
     				  fallen,
     				  xCol, yCol,
-    				  isInvincible = false, die = false, useRight;
+    				  isInvincible, die;
 	
     protected TileCollision tc;
     
@@ -41,7 +35,7 @@ public abstract class Creture extends Entity {
 	protected float acc;
 	protected float deacc;
 	protected int currentAnimation;
-	protected int currentDirection = RIGHT;
+	protected int currentDirection = IDLE;
 	protected int invincible = 500;
 	
 	protected long attackTime, invincibletime;
@@ -68,45 +62,7 @@ public abstract class Creture extends Entity {
         ani.setDelay(delay);
     }
 
-	public void animate() {
-
-        if(attacking) {
-            if(currentAnimation < 5) {
-                setAnimation(currentAnimation + ATTACK, sprite.getSpriteArray(currentAnimation + ATTACK), attackDuration / 100);
-            }
-        } else if (up) {
-            if ((currentAnimation != UP || ani.getDelay() == -1)) {
-                setAnimation(UP, sprite.getSpriteArray(UP), 5);
-            }
-        } else if (down) {
-            if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
-                setAnimation(DOWN, sprite.getSpriteArray(DOWN), 5);
-            }
-        } else if (left) {
-            if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
-                setAnimation(LEFT, sprite.getSpriteArray(LEFT), 5);
-            }
-        } else if (right) {
-            if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
-                setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 5);
-            }
-        } else if (fallen) {
-            if (currentAnimation != FALLEN || ani.getDelay() == -1) {
-                setAnimation(FALLEN, sprite.getSpriteArray(FALLEN), 15);
-            }
-        }
-        else {
-            if(!attacking && currentAnimation > 4) {
-                setAnimation(currentAnimation - ATTACK, sprite.getSpriteArray(currentAnimation - ATTACK), -1);
-            } else if(!attacking) {
-                if(hasIdle && currentAnimation != IDLE) {
-                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
-                } else if(!hasIdle) {
-                    setAnimation(currentAnimation, sprite.getSpriteArray(currentAnimation), -1);
-                }
-            }
-        }
-    }
+	public abstract void animate();
 	
 	public void move() {
 		
@@ -211,6 +167,7 @@ public abstract class Creture extends Entity {
     }
 	
 	public void setHealth(int i, float f, boolean dir) {
+		
         if(!isInvincible) {
             health = i;
             isInvincible = true;
@@ -225,15 +182,14 @@ public abstract class Creture extends Entity {
         }
     }
 	
-	public void update(double time) {
+	public void update(double time) {		
 		
 		if(isInvincible) {
             if((invincibletime / 1000000) + invincible < (time / 1000000) ) {
                 isInvincible = false;
             }
         }
-		
-        animate();
+
         ani.update();
         setHitBoxDirection();
     }

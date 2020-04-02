@@ -22,9 +22,19 @@ public class Player extends Creture{
 		
 		this.enemy = enemy;
 		
+		ATTACK = 5;
+	    FALLEN = 4;
+	    UP = 3;
+	    DOWN = 2;
+	    LEFT = 1;
+	    RIGHT = 0;
+	    IDLE = 6;
+	    ANIMATIONSPEED = 5;
+	    
 		acc = 2f;
 		maxSpeed = 4f;
 		deacc = 0.3f;
+		force = 25f;
 		
 		attackDuration = 325;
 		attackSpeed = 525;
@@ -53,16 +63,12 @@ public class Player extends Creture{
 	public void update(double time) {
         super.update(time);
         
+        animate();
         attacking = isAttacking(time);
         
-        for(int i = 0; i < enemy.size(); i++) {
-            if(attacking && hitBounds.collides(enemy.get(i).getBounds())) {
+        for(int i = 0; i < enemy.size(); i++)
+            if(attacking && hitBounds.collides(enemy.get(i).getBounds()))
                 enemy.get(i).setHealth(enemy.get(i).getHealth() - damage, force * getDirection(), currentDirection == UP || currentDirection == DOWN);
-                
-                if(enemy.get(i).die)
-                	enemy.remove(i);
-            }
-        }
         
         if(!fallen) {
             move();
@@ -114,7 +120,7 @@ public class Player extends Creture{
 	}
 	
 	@Override
-	public void render(Graphics2D g) {		
+	public void render(Graphics2D g) {	
 		g.setColor(Color.green);
 		
 		if(attack) {
@@ -187,4 +193,47 @@ public class Player extends Creture{
 		return pos;
 	}
 
+	public boolean getDeath() {
+		return die;
+	}
+
+	@Override
+	public void animate() {
+		if(attacking) {
+            if(currentAnimation < 5) {
+                setAnimation(currentAnimation + ATTACK, sprite.getSpriteArray(currentAnimation + ATTACK), attackDuration / 100);
+            }
+        } else if (up) {
+            if ((currentAnimation != UP || ani.getDelay() == -1)) {
+                setAnimation(UP, sprite.getSpriteArray(UP), ANIMATIONSPEED);
+            }
+        } else if (down) {
+            if ((currentAnimation != DOWN || ani.getDelay() == -1)) {
+                setAnimation(DOWN, sprite.getSpriteArray(DOWN), ANIMATIONSPEED);
+            }
+        } else if (left) {
+            if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
+                setAnimation(LEFT, sprite.getSpriteArray(LEFT), ANIMATIONSPEED);
+            }
+        } else if (right) {
+            if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {
+                setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), ANIMATIONSPEED);
+            }
+        } else if (fallen) {
+            if (currentAnimation != FALLEN || ani.getDelay() == -1) {
+                setAnimation(FALLEN, sprite.getSpriteArray(FALLEN), 15);
+            }
+        }
+        else {
+            if(!attacking && currentAnimation > 4) {
+                setAnimation(currentAnimation - ATTACK, sprite.getSpriteArray(currentAnimation - ATTACK), -1);
+            } else if(!attacking) {
+                if(hasIdle && currentAnimation != IDLE) {
+                    setAnimation(IDLE, sprite.getSpriteArray(IDLE), 10);
+                } else if(!hasIdle) {
+                    setAnimation(currentAnimation, sprite.getSpriteArray(currentAnimation), -1);
+                }
+            }
+        }
+	}
 }

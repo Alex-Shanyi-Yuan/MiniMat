@@ -27,25 +27,26 @@ public abstract class Enemy extends Creture {
     }
 
     public void chase(Player player) {
-
+    	System.out.println(pos.getX() + "\n" + player.getPos().getX() + 1);
+    	
         if (!hitBounds.collides(player.getBounds())) {
-            if (pos.getY() > player.getPos().getY() + 1) {
+            if (pos.getY() > player.getPos().getY() + 5) {
                 up = true;
             } else {
                 up = false;
             }
-            if (pos.getY() < player.getPos().getY() - 1) {
+            if (pos.getY() < player.getPos().getY() - 5) {
                 down = true;
             } else {
                 down = false;
             }
 
-            if (pos.getX() > player.getPos().getX() + 1) {
+            if (pos.getX() > player.getPos().getX() + 5) {
                 left = true;
             } else {
                 left = false;
             } 
-            if (pos.getX() < player.getPos().getX() - 1) {
+            if (pos.getX() < player.getPos().getX() - 5) {
                 right = true;
             } else {
                 right = false;
@@ -61,16 +62,19 @@ public abstract class Enemy extends Creture {
     public void update(Player player, double time) {
         if(cam.getBounds().collides(this.bounds)) {
             super.update(time);
+            
+            this.animate();
             attacking = isAttacking(time);
             
-            chase(player);
-            move();
-
+	       	move();
+	        chase(player);
+            
             if(hitBounds.collides(player.getBounds()) && !isInvincible) {
-                attack = true;
-                player.setHealth(player.getHealth() - damage, 5f * getDirection(), currentDirection == UP || currentDirection == DOWN);
-            } else {
-                attack = false;
+        	
+                attackTime = System.nanoTime();
+                if(attacking) {
+                	player.setHealth(player.getHealth() - damage, 6f * getDirection(), currentDirection == UP || currentDirection == DOWN);
+                }
             }
 
             if (!fallen) {
@@ -82,31 +86,25 @@ public abstract class Enemy extends Creture {
                     hitBounds.getPos().addY(dy);
                     pos.addY(dy);
                 }
-            } else {
-                if(ani.hasPlayedOnce()) {
+            } else if(ani.hasPlayedOnce()) 
                     die = true;
-                }
-            }
         }
     }
 
     @Override
     public void render(Graphics2D g) {
-    	
+
         if(cam.getBounds().collides(bounds)) { 
         	
-            //if(isInvincible) 
-            if(useRight && left) {
-                g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()) + size, (int) (pos.getWorldVar().getY()), -size, size, null);
-            } else {
-                g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()), (int) (pos.getWorldVar().getY()), size, size, null);
-            }
+            g.drawImage(ani.getImage().getImage(), (int) (pos.getWorldVar().getX()), (int) (pos.getWorldVar().getY()), size, size, null);
+            
 			
             // Health Bar UI
             g.setColor(Color.red);
 			g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()) - 5, (int) (pos.getWorldVar().getY() - 5), 50, 5);
 			g.drawRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() + bounds.getYOffset()), (int) bounds.getWidth(), (int) bounds.getHeight());
-			if(attack)
+			
+			if(attacking)
 				g.drawRect((int) (hitBounds.getPos().getWorldVar().getX() + hitBounds.getXOffset()), (int) (hitBounds.getPos().getWorldVar().getY() + hitBounds.getYOffset()), (int) hitBounds.getWidth(), (int) hitBounds.getHeight());
 			
 			g.setColor(Color.green);
@@ -114,5 +112,9 @@ public abstract class Enemy extends Creture {
 
         }
         
+    }
+    
+    public boolean getDeath() {
+    	return die;
     }
 }

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import com.alexyuan.Entity.Cretures.Player;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
-import com.alexyuan.Entity.Cretures.Enemy.TinyMan;
+import com.alexyuan.Entity.Cretures.Enemy.GreenGoblin;
+import com.alexyuan.Entity.Cretures.Enemy.PurpleGoblin;
 import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
@@ -38,7 +39,8 @@ public class PlayState extends GameState{
 		tm = new TileManager("resources/TiledMap/tilemap.xml", cam);
 		
 		enemy = new ArrayList<Enemy>();
-		enemy.add(new TinyMan(cam, Textures.getGirl(), new Vector2f(1000,800), 64));
+		enemy.add(new GreenGoblin(cam, new Vector2f(1000,800), 64));
+		enemy.add(new PurpleGoblin(cam, new Vector2f(2000 ,500), 64));
 		
 		player = new Player(Textures.getPlayer(),new Vector2f(600 - 32,350 - 32), enemy);
 		
@@ -47,11 +49,18 @@ public class PlayState extends GameState{
 
 	public void updata(double time) {
 		Vector2f.setWorldVar(map.getX(), map.getY());
-		player.update(time);
 		cam.update();
 		
-		for(Enemy e : enemy)
-			e.update(player, time);
+		if(player.getDeath())
+			gsm.addAndpop(gsm.GAMEOVER, gsm.PLAY);
+		else 
+			player.update(time);
+		
+		for(int i = 0; i < enemy.size(); i++)
+			if(enemy.get(i).getDeath())
+				enemy.remove(i);
+			else 
+				enemy.get(i).update(player, time);
 	}
 
 	@Override
@@ -62,7 +71,6 @@ public class PlayState extends GameState{
 		for(Enemy e : enemy)
 			e.render(g);
 		
-		System.out.println(player.getHealthPercent());
 		for(int i = 1; i <= Textures.getHeart().getSpriteArray(0).length; i++)
 			if(player.getHealthPercent() * 100  >= i * 20)
 				g.drawImage(Textures.getHeart().getSpriteArray(0)[FULL].getImage(), i*32, 32, 32, 32, null);

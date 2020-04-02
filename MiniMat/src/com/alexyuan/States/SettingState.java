@@ -42,7 +42,7 @@ public class SettingState extends GameState {
 	public void render(Graphics2D g) {
 		
 		g.setColor(new Color(255,204,153));
-		g.fillRect(0 ,0 , gsm.width, gsm.height);
+		g.fillRect(0 ,0 , 1200, 700);
 		
 		g.drawImage(Textures.getButtonBoard(), 350, 50, null);
 		g.setColor(Color.black);

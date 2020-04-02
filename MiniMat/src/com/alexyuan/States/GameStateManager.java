@@ -10,14 +10,14 @@ import com.alexyuan.util.MouseHandler;
 
 public class GameStateManager {
 	
-	protected GameState[] states;
+	private GameState[] states;
 	
-	protected static final int MENU = 0;
-	protected static final int PLAY = 1;
-	protected static final int PAUSE = 2;
-	protected static final int GAMEOVER = 3;
-	protected static final int SETTING = 4;
-	protected int width, height;
+	public final int MENU = 0;
+	public final int PLAY = 1;
+	public final int PAUSE = 2;
+	public final int GAMEOVER = 3;
+	public final int SETTING = 4;
+	private int width, height;
     
 	private static Vector2f map;
 	
