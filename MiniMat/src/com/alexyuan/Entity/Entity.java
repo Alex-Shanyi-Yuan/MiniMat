@@ -3,6 +3,7 @@ package com.alexyuan.Entity;
 import java.awt.Graphics2D;
 
 import com.alexyuan.Graphics.Animation;
+import com.alexyuan.LoadFile.Sprite;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
@@ -12,6 +13,7 @@ import com.alexyuan.util.TileCollision;
 
 public abstract class Entity {
 	
+	protected int currentAnimation;
 	protected int size;
 	protected Vector2f pos;
 	protected Animation ani;
@@ -39,5 +41,11 @@ public abstract class Entity {
         this.pos = pos;
         this.bounds = new AABB(pos, size, size);
         teleported = true;
+    }
+	
+	public void setAnimation(int i, Sprite[] frames, int delay) {
+        currentAnimation = i;
+        ani.setFrames(i, frames);
+        ani.setDelay(delay);
     }
 }

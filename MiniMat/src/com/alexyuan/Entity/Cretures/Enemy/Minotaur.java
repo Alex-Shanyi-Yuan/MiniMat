@@ -5,45 +5,45 @@ import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.util.Camera;
 
-public class PurpleGoblin extends Enemy{
+public class Minotaur extends Enemy {
+	
+	public Minotaur(Camera cam, Vector2f origin, int size) {
+		super(cam, Textures.getMinotaur(), origin, size);
 
-	public PurpleGoblin(Camera cam, Vector2f origin, int size) {
-		super(cam, Textures.getPurpleGoblin(), origin, size);
-
-        damage = 10;
+        damage = 50;
         acc = 1f;
         deacc = 2f;
         maxSpeed = 2f;
         
-        r_attackrange = 32;
-        r_sense = 350;
+        r_attackrange = 150;
+        r_sense = 1000;
         sense = new AABB(new Vector2f(pos.getX() + size / 2 - r_sense / 2, pos.getY() + size / 2 - r_sense / 2), r_sense);
         attackrange = new AABB(new Vector2f(pos.getX() + bounds.getXOffset() + bounds.getWidth() / 2 - r_attackrange / 2 , pos.getY() + bounds.getYOffset() + bounds.getHeight() / 2 - r_attackrange / 2 ), r_attackrange);
         
-        attackSpeed = 10000;
+        attackSpeed = 500;
         attackDuration = 250;
-        force = 6f;
+        force = 20f;
 		
-        bounds.setWidth(42);
-		bounds.setHeight(20);
-		bounds.setXOffset(12);
+        bounds.setWidth(84);
+		bounds.setHeight(60);
+		bounds.setXOffset(24);
 		bounds.setYOffset(40);
-        
-        maxHealth = 100;
-        health = 100;
 
-        ATTACK = -4;
-	    FALLEN = -2;
-	    UP = 1;
+        maxHealth = 300;
+        health = 300;
+
+        ATTACK = 2;
+	    FALLEN = 8;
+	    UP = 12;
 	    DOWN = 2;
-	    LEFT = 8;
-	    RIGHT = 7;
-	    IDLE = 0;
+	    LEFT = 11;
+	    RIGHT = 1;
 	    ANIMATIONSPEED = 5;
 
-        hasIdle = true;
-
-        currentAnimation = 0;
+	    ani.setNumFrames(8, RIGHT);
+	    ani.setNumFrames(8, LEFT);
+	    ani.setNumFrames(5, UP);
+	    ani.setNumFrames(5, DOWN);
 	}
 
 	@Override

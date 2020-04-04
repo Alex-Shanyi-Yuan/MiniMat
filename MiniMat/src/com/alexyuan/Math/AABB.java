@@ -1,9 +1,5 @@
 package com.alexyuan.Math;
 
-import com.alexyuan.Tiles.TileMapObj;
-import com.alexyuan.Tiles.blocks.Block;
-import com.alexyuan.Tiles.blocks.HoleBlock;
-
 public class AABB {
 
     private Vector2f pos;
@@ -11,7 +7,7 @@ public class AABB {
     private float yOffset = 0;
     private float w;
     private float h;
-    private float r;
+    public float r;
     private int size;
 
     private float surfaceArea;
@@ -131,13 +127,17 @@ public class AABB {
 
     public boolean colCircleBox(AABB aBox) {
 
-        float dx = Math.max(aBox.getPos().getWorldVar().getX() + aBox.getXOffset(), Math.min(pos.getWorldVar().getX() + (r / 2), aBox.getPos().getWorldVar().getX() + aBox.getXOffset() + aBox.getWidth()));
-        float dy = Math.max(aBox.getPos().getWorldVar().getY() + aBox.getYOffset(), Math.min(pos.getWorldVar().getY() + (r / 2), aBox.getPos().getWorldVar().getY() + aBox.getYOffset() + aBox.getHeight()));
+        float dx = Math.max(aBox.getPos().getX() + aBox.getXOffset(), Math.min(pos.getX() + (r / 2), aBox.getPos().getX() + aBox.getXOffset() + aBox.getWidth()));
+        float dy = Math.max(aBox.getPos().getY() + aBox.getYOffset(), Math.min(pos.getY() + (r / 2), aBox.getPos().getY() + aBox.getYOffset() + aBox.getHeight()));
 
-        dx = pos.getWorldVar().getX() + (r / 2) - dx;
-        dy = pos.getWorldVar().getY() + (r / 2) - dy;
+        dx = pos.getX() + (r / 2) - dx;
+        dy = pos.getY() + (r / 2) - dy;
+        
+        if(Math.sqrt(dx * dx + dy * dy) < r / 2) {
+            return true;
+        }
 
-        return Math.sqrt(dx * dx + dy * dy) < r / 2;
+        return false;
     }
 
     public float distance(Vector2f other) {
@@ -156,15 +156,4 @@ public class AABB {
         Vector2f pos = new Vector2f(minX, minY);
         return new AABB(pos, maxW, maxH);
 	} 
-	
-	public String toString() {
-
-		String x = Float.toString(pos.getX());
-		String y = Float.toString(pos.getY());
-		String w = Float.toString(this.w);
-		String h = Float.toString(this.h);
-
-		return "{" + x + ", " + y + " : " + w + ", " + h + "}";
-	}
-
 }

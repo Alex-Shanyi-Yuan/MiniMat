@@ -5,45 +5,47 @@ import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.util.Camera;
 
-public class PurpleGoblin extends Enemy{
-
-	public PurpleGoblin(Camera cam, Vector2f origin, int size) {
-		super(cam, Textures.getPurpleGoblin(), origin, size);
+public class TinyMon extends Enemy {
+	
+	public TinyMon(Camera cam, Vector2f origin, int size) {
+		super(cam, Textures.getMon(), origin, size);
 
         damage = 10;
         acc = 1f;
         deacc = 2f;
         maxSpeed = 2f;
         
-        r_attackrange = 32;
-        r_sense = 350;
+        r_attackrange = 40;
+        r_sense = 300;
         sense = new AABB(new Vector2f(pos.getX() + size / 2 - r_sense / 2, pos.getY() + size / 2 - r_sense / 2), r_sense);
         attackrange = new AABB(new Vector2f(pos.getX() + bounds.getXOffset() + bounds.getWidth() / 2 - r_attackrange / 2 , pos.getY() + bounds.getYOffset() + bounds.getHeight() / 2 - r_attackrange / 2 ), r_attackrange);
         
-        attackSpeed = 10000;
-        attackDuration = 250;
-        force = 6f;
+        attackSpeed = 500;
+        attackDuration = 500;
+        force = 3f;
 		
         bounds.setWidth(42);
 		bounds.setHeight(20);
 		bounds.setXOffset(12);
 		bounds.setYOffset(40);
-        
-        maxHealth = 100;
-        health = 100;
 
-        ATTACK = -4;
-	    FALLEN = -2;
-	    UP = 1;
-	    DOWN = 2;
-	    LEFT = 8;
-	    RIGHT = 7;
-	    IDLE = 0;
+        maxHealth = 300;
+        health = 300;
+
+        ATTACK = 1;
+	    FALLEN = 6;
+	    UP = 5;
+	    DOWN = 13;
+	    LEFT = 9;
+	    RIGHT = 1;
 	    ANIMATIONSPEED = 5;
 
-        hasIdle = true;
-
-        currentAnimation = 0;
+	    ani.setNumFrames(5, UP);
+	    ani.setNumFrames(5, DOWN);
+	    ani.setNumFrames(7, LEFT + ATTACK);
+	    ani.setNumFrames(7, RIGHT + ATTACK);
+	    ani.setNumFrames(7, LEFT + FALLEN);
+	    ani.setNumFrames(7, RIGHT + FALLEN);
 	}
 
 	@Override

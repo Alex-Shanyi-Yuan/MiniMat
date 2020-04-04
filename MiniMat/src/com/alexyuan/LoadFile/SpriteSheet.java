@@ -13,8 +13,8 @@ public class SpriteSheet {
     private Sprite SPRITESHEET = null;
     private Sprite[][] spriteArray;
     private final int TILE_SIZE = 64;
-    public int w;
-    public int h;
+    private int w;
+    private int h;
     private int wSprite;
     private int hSprite;
     private String file;
@@ -26,8 +26,8 @@ public class SpriteSheet {
 
         SPRITESHEET = new Sprite(loadSprite(file));
 
-        wSprite = SPRITESHEET.getImage().getWidth() / w;
-        hSprite = SPRITESHEET.getImage().getHeight() / h;
+        wSprite = Math.round(SPRITESHEET.getImage().getWidth() / w);
+        hSprite = Math.round(SPRITESHEET.getImage().getHeight() / h);
         loadSpriteArray();
     }
 
@@ -37,8 +37,8 @@ public class SpriteSheet {
 
         SPRITESHEET = sprite;
 
-        wSprite = SPRITESHEET.getImage().getWidth() / w;
-        hSprite = SPRITESHEET.getImage().getHeight() / h;
+        wSprite = Math.round(SPRITESHEET.getImage().getWidth() / w);
+        hSprite = Math.round(SPRITESHEET.getImage().getHeight() / h);
         loadSpriteArray();
         
     }

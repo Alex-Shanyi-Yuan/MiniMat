@@ -15,6 +15,9 @@ public class Textures {
 	private static SpriteSheet heart = null;
 	private static SpriteSheet greenG = null;
 	private static SpriteSheet purpleG = null;
+	private static SpriteSheet minotaur = null;
+	private static SpriteSheet tinyMon = null;
+	private static SpriteSheet chest = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
@@ -25,6 +28,10 @@ public class Textures {
 		heart = new SpriteSheet("resources/Texture/health_player.png", 17, 17);
 		greenG = new SpriteSheet("resources/Entity/green_goblin.png",32, 32);
 		purpleG = new SpriteSheet("resources/Entity/purple_goblin.png",32, 32);
+		minotaur = new SpriteSheet("resources/Entity/Minotaur.png",96, 96);
+		tinyMon = new SpriteSheet("resources/Entity/TinyMon.png", 32, 32);
+		chest = new SpriteSheet("resources/Entity/Chest.png", 64, 64);
+		
 	}
 	
 	private BufferedImage loadImage(String path){
@@ -66,5 +73,17 @@ public class Textures {
 
 	public static SpriteSheet getPurpleGoblin() {
 		return purpleG;
+	}
+	
+	public static SpriteSheet getMinotaur() {
+		return minotaur;
+	}
+	
+	public static SpriteSheet getMon() {
+		return tinyMon;
+	}
+	
+	public static SpriteSheet getChest() {
+		return chest;
 	}
 }

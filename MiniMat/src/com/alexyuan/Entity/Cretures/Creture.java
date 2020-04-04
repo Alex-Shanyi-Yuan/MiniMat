@@ -34,7 +34,6 @@ public abstract class Creture extends Entity {
 	protected float dx, dy;
 	protected float acc;
 	protected float deacc;
-	protected int currentAnimation;
 	protected int currentDirection = IDLE;
 	protected int invincible = 500;
 	
@@ -55,12 +54,6 @@ public abstract class Creture extends Entity {
 		health = DEFAULT_HEALTH;
 		speed = maxSpeed;
 	}
-	
-	public void setAnimation(int i, Sprite[] frames, int delay) {
-        currentAnimation = i;
-        ani.setFrames(i, frames);
-        ani.setDelay(delay);
-    }
 
 	public abstract void animate();
 	
@@ -173,7 +166,7 @@ public abstract class Creture extends Entity {
             isInvincible = true;
             invincibletime = System.nanoTime();
             if(health <= 0) {
-                die = true;
+            	fallen = true;
             }
 
             addForce(f, dir);

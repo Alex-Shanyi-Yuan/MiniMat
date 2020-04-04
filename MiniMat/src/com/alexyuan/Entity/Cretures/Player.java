@@ -8,8 +8,6 @@ import com.alexyuan.Entity.Cretures.Enemy.Enemy;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.States.PlayState;
-import com.alexyuan.Tiles.TileManager;
-import com.alexyuan.Tiles.blocks.NormBlock;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
@@ -38,7 +36,7 @@ public class Player extends Creture{
 		
 		attackDuration = 325;
 		attackSpeed = 525;
-		damage = 10;
+		damage = 500;
 		
 		bounds.setWidth(42);
 		bounds.setHeight(20);
@@ -72,17 +70,13 @@ public class Player extends Creture{
         
         if(!fallen) {
             move();
-            //&& !bounds.collides(dx, 0, ))
             if(!tc.collisionTile(dx, 0)) {
-                //PlayState.map.x += dx;
                 pos.addX(dx);
                 xCol = false;
             } else {
                 xCol = true;
             }
-            //&& !bounds.collides(0, dy, go)
             if(!tc.collisionTile(0, dy) ) {
-                //PlayState.map.y += dy;
                 pos.addY(dy);
                 yCol = false;
             } else {
@@ -92,7 +86,7 @@ public class Player extends Creture{
             tc.normalTile(dx, 0);
             tc.normalTile(0, dy);
 
-        } else {
+        } else{
             xCol = true;
             yCol = true;
             if(ani.hasPlayedOnce()) {
@@ -100,6 +94,9 @@ public class Player extends Creture{
                 dx = 0;
                 dy = 0;
                 fallen = false;
+                
+                if(this.getHealth() <= 0)
+                	die = true;
             }
         }
        
@@ -199,7 +196,7 @@ public class Player extends Creture{
 
 	@Override
 	public void animate() {
-		if(attacking) {
+		if(attacking && !fallen) {
             if(currentAnimation < 5) {
                 setAnimation(currentAnimation + ATTACK, sprite.getSpriteArray(currentAnimation + ATTACK), attackDuration / 100);
             }

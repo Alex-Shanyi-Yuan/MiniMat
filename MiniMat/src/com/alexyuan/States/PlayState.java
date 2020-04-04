@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import com.alexyuan.Entity.Cretures.Player;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
 import com.alexyuan.Entity.Cretures.Enemy.GreenGoblin;
+import com.alexyuan.Entity.Cretures.Enemy.Minotaur;
 import com.alexyuan.Entity.Cretures.Enemy.PurpleGoblin;
+import com.alexyuan.Entity.Cretures.Enemy.TinyMon;
 import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
@@ -39,8 +41,17 @@ public class PlayState extends GameState{
 		tm = new TileManager("resources/TiledMap/tilemap.xml", cam);
 		
 		enemy = new ArrayList<Enemy>();
-		enemy.add(new GreenGoblin(cam, new Vector2f(1000,800), 64));
-		enemy.add(new PurpleGoblin(cam, new Vector2f(2000 ,500), 64));
+		enemy.add(new GreenGoblin(cam, new Vector2f(1920,576), 64));
+		enemy.add(new PurpleGoblin(cam, new Vector2f(1664 ,576), 64));
+		enemy.add(new GreenGoblin(cam, new Vector2f(2240,960), 64));
+		enemy.add(new PurpleGoblin(cam, new Vector2f(2240 ,768), 64));
+		enemy.add(new GreenGoblin(cam, new Vector2f(2240,1344), 64));
+		enemy.add(new PurpleGoblin(cam, new Vector2f(2240 ,1152), 64));
+		enemy.add(new Minotaur(cam, new Vector2f(1216, 1152), 128));
+		enemy.add(new TinyMon(cam, new Vector2f(512, 2112), 64));
+		enemy.add(new TinyMon(cam, new Vector2f(1600, 2112), 64));
+		enemy.add(new TinyMon(cam, new Vector2f(2368, 2112), 64));
+		enemy.add(new TinyMon(cam, new Vector2f(2688, 2112), 64));
 		
 		player = new Player(Textures.getPlayer(),new Vector2f(600 - 32,350 - 32), enemy);
 		
