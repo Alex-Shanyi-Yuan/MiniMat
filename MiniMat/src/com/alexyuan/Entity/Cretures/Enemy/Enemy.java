@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.alexyuan.Entity.Entity;
 import com.alexyuan.Entity.Cretures.Creture;
-import com.alexyuan.Entity.Cretures.Player;
+import com.alexyuan.Entity.Cretures.Player.Player;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;

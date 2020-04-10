@@ -19,6 +19,9 @@ public abstract class Entity {
 	protected Animation ani;
 	protected SpriteSheet sprite;
 	protected AABB bounds;
+	protected boolean die;
+	
+	protected boolean INTERACTE = false;
 	
 	protected boolean teleported = false;
 	
@@ -29,9 +32,15 @@ public abstract class Entity {
 		this.pos = origin;
 		this.size = size;
 		this.sprite = sprite;
+		
+		ani = new Animation();
 	}
 	
 	public abstract void render(Graphics2D g);
+	
+	public void update() {
+		ani.update();
+	}
 	
 	public AABB getBounds() {
 		return bounds;

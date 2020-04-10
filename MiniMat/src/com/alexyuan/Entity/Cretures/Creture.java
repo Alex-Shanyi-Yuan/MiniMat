@@ -19,7 +19,7 @@ public abstract class Creture extends Entity {
     				  attack, attacking, canAttack, hasIdle, 
     				  fallen,
     				  xCol, yCol,
-    				  isInvincible, die;
+    				  isInvincible;
 	
     protected TileCollision tc;
     
@@ -48,7 +48,6 @@ public abstract class Creture extends Entity {
 		hitBounds.setXOffset(size / 2);
 		
 		tc = new TileCollision(this);
-		ani = new Animation();
 		setAnimation(RIGHT, sprite.getSpriteArray(RIGHT), 10);
 		
 		health = DEFAULT_HEALTH;
@@ -176,6 +175,7 @@ public abstract class Creture extends Entity {
     }
 	
 	public void update(double time) {		
+		super.update();
 		
 		if(isInvincible) {
             if((invincibletime / 1000000) + invincible < (time / 1000000) ) {
@@ -183,7 +183,6 @@ public abstract class Creture extends Entity {
             }
         }
 
-        ani.update();
         setHitBoxDirection();
     }
 	

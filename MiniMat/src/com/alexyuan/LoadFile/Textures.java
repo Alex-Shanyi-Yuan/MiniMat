@@ -10,6 +10,7 @@ public class Textures {
 	private static BufferedImage icon = null;
 	private static BufferedImage menuBack = null;
 	private static BufferedImage buttonBoard = null;
+	
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
 	private static SpriteSheet heart = null;
@@ -18,11 +19,14 @@ public class Textures {
 	private static SpriteSheet minotaur = null;
 	private static SpriteSheet tinyMon = null;
 	private static SpriteSheet chest = null;
+	private static SpriteSheet potionH = null;
+	private static SpriteSheet potionD = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
 		menuBack = loadImage("/resources/Texture/MenuBack.jpg");
 		buttonBoard = loadImage("/resources/Texture/ButtonBoard.png");
+		
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
 		girl = new SpriteSheet("resources/Entity/littlegirl.png", 48, 48);
 		heart = new SpriteSheet("resources/Texture/health_player.png", 17, 17);
@@ -30,7 +34,11 @@ public class Textures {
 		purpleG = new SpriteSheet("resources/Entity/purple_goblin.png",32, 32);
 		minotaur = new SpriteSheet("resources/Entity/Minotaur.png",96, 96);
 		tinyMon = new SpriteSheet("resources/Entity/TinyMon.png", 32, 32);
+		
 		chest = new SpriteSheet("resources/Entity/Chest.png", 64, 64);
+		potionH = new SpriteSheet("resources/Entity/Health_Potion.png", 64, 64);
+		potionD = new SpriteSheet("resources/Entity/Damage_Potion.png", 64, 64);
+		
 		
 	}
 	
@@ -85,5 +93,13 @@ public class Textures {
 	
 	public static SpriteSheet getChest() {
 		return chest;
+	}
+	
+	public static SpriteSheet getPotionH() {
+		return potionH;
+	}
+	
+	public static SpriteSheet getPotionD() {
+		return potionD;
 	}
 }
