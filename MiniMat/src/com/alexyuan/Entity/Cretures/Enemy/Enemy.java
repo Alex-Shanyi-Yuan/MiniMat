@@ -16,9 +16,7 @@ public abstract class Enemy extends Creture {
 
     private Camera cam;
 
-    protected AABB sense;
     protected AABB attackrange;
-    protected int r_sense;
     protected int r_attackrange;
 
     protected ArrayList<Entity> collisions;

@@ -11,6 +11,8 @@ import com.alexyuan.Entity.Cretures.Enemy.GreenGoblin;
 import com.alexyuan.Entity.Cretures.Enemy.Minotaur;
 import com.alexyuan.Entity.Cretures.Enemy.PurpleGoblin;
 import com.alexyuan.Entity.Cretures.Enemy.TinyMon;
+import com.alexyuan.Entity.Cretures.NPC.Friend;
+import com.alexyuan.Entity.Cretures.NPC.NPC;
 import com.alexyuan.Entity.Cretures.Player.Player;
 import com.alexyuan.Entity.Cretures.Player.PlayerUI;
 import com.alexyuan.LoadFile.Textures;
@@ -23,6 +25,8 @@ import com.alexyuan.util.MouseHandler;
 
 public class PlayState extends GameState{
 
+	private static boolean pause = false;
+	
 	private PlayerUI playerUI;
 	private Player player;
 	private TileManager tm;
@@ -33,7 +37,9 @@ public class PlayState extends GameState{
 	private ArrayList<Enemy> enemy;
 	private ArrayList<Chest> chest;
 	private ArrayList<Potion> potion;
-			
+	
+	private Friend friend;
+	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
 		
@@ -44,6 +50,8 @@ public class PlayState extends GameState{
 		cam = new Camera(new AABB(new Vector2f(-1, -1), 1232, 732));
 		playerUI = new PlayerUI();
 		tm = new TileManager("resources/TiledMap/tilemap.xml", cam);
+		
+		friend = new Friend(cam, new Vector2f(640, 256), 64);
 		
 		potion = new ArrayList<Potion>();
 		
@@ -73,8 +81,18 @@ public class PlayState extends GameState{
 	}
 
 	public void updata(double time) {
+		
+		if(pause)
+			return;
+		
+		friend.update(player, time);
+		
+		if(friend.getInteracte())
+			return;
+		
 		Vector2f.setWorldVar(map.getX(), map.getY());
 		cam.update();
+		
 		playerUI.update(player);
 		
 		if(player.getDeath())
@@ -99,8 +117,10 @@ public class PlayState extends GameState{
 	}
 
 	@Override
-	public void render(Graphics2D g) {		
+	public void render(Graphics2D g) {	
+		
 		tm.render(g);
+		friend.render(g);
 		
 		for(Enemy e : enemy)
 			e.render(g);
@@ -127,5 +147,17 @@ public class PlayState extends GameState{
 
 	public static Camera getCam() {
 		return cam;
+	}
+	
+	public static boolean isPause() {
+		return pause;
+	}
+	
+	public static void setPause(Boolean p) {
+		pause  = p;
+	}
+	
+	public static GameStateManager getGsm() {
+		return gsm;
 	}
 }

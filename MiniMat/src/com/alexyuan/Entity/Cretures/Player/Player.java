@@ -4,17 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import com.alexyuan.GamePanel;
 import com.alexyuan.Entity.Cretures.Creture;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.Vector2f;
+import com.alexyuan.States.GameStateManager;
 import com.alexyuan.States.PlayState;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
 public class Player extends Creture{
 
-	private boolean F = false, one = false, two = false;
+	private boolean F = false, one = false, two = false, enter = false;
 	private ArrayList<Enemy> enemy;
 	
 	public Player(SpriteSheet sprite, Vector2f pos, ArrayList<Enemy> enemy) {
@@ -135,8 +137,24 @@ public class Player extends Creture{
 		key.getAttack().tick();
 		key.getOne().tick();
 		key.getTwo().tick();
+		key.getEnter().tick();
+		key.getEscape().tick();
+		
+		if(key.getEscape().isClicked()) {
+			if(PlayState.isPause())
+				PlayState.getGsm().pop(PlayState.getGsm().PAUSE);
+			else
+				PlayState.getGsm().add(PlayState.getGsm().PAUSE);
+			
+			PlayState.setPause(!PlayState.isPause());
+		}
 		
 		if(!fallen) {
+			if(key.getEnter().isClicked()) {
+				enter = true;
+			} else {
+				enter = false;
+			}
             if(key.getUp().isHoldDown()) {
                 up = true;
             } else {
@@ -263,6 +281,10 @@ public class Player extends Creture{
 	
 	public boolean getTwo() {
 		return two;
+	}
+	
+	public boolean getEnter() {
+		return enter;
 	}
 
 	public void setDamage(int i) {

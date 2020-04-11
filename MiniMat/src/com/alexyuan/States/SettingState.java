@@ -44,7 +44,7 @@ public class SettingState extends GameState {
 		g.setColor(new Color(255,204,153));
 		g.fillRect(0 ,0 , 1200, 700);
 		
-		g.drawImage(Textures.getButtonBoard(), 350, 50, null);
+		g.drawImage(Textures.getBoard(), 350, 50, null);
 		g.setColor(Color.black);
 		g.setFont(Fonts.getMagon2().deriveFont(90f));
 		g.drawString("Setting", 490, 140);

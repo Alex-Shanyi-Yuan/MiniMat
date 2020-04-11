@@ -57,7 +57,7 @@ public class GreenGoblin extends Enemy{
 			}
 		} else if (left) {
             if ((currentAnimation != LEFT || ani.getDelay() == -1)) {
-                setAnimation(LEFT, sprite.getSpriteArray(LEFT), ANIMATIONSPEED - 2);
+                setAnimation(LEFT, sprite.getSpriteArray(LEFT), ANIMATIONSPEED);
             }
         } else if (right) {
             if ((currentAnimation != RIGHT || ani.getDelay() == -1)) {

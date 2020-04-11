@@ -9,7 +9,7 @@ public class Textures {
 	
 	private static BufferedImage icon = null;
 	private static BufferedImage menuBack = null;
-	private static BufferedImage buttonBoard = null;
+	private static BufferedImage board = null;
 	
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
@@ -25,7 +25,7 @@ public class Textures {
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
 		menuBack = loadImage("/resources/Texture/MenuBack.jpg");
-		buttonBoard = loadImage("/resources/Texture/ButtonBoard.png");
+		board = loadImage("/resources/Texture/Board.png");
 		
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
 		girl = new SpriteSheet("resources/Entity/littlegirl.png", 48, 48);
@@ -59,8 +59,8 @@ public class Textures {
 		return menuBack;
 	}
 	
-	public static BufferedImage getButtonBoard() {
-		return buttonBoard;
+	public static BufferedImage getBoard() {
+		return board;
 	}
 	
 	public static SpriteSheet getPlayer() {

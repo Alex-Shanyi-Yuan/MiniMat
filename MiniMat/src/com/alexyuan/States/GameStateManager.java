@@ -33,11 +33,11 @@ public class GameStateManager {
 		states[MENU] = new MenuState(this);
 	}
 	
-	protected void pop(int state) {
+	public void pop(int state) {
         states[state] = null;
     }
 
-	protected void add(int state) {
+	public void add(int state) {
         if (states[state] != null)
             return;
 

@@ -40,6 +40,8 @@ public abstract class Creture extends Entity {
 	protected long attackTime, invincibletime;
 	
 	protected AABB hitBounds;
+	protected AABB sense;
+	protected int r_sense;
 	
 	public Creture(SpriteSheet sprite, Vector2f origin, int size) {
 		super(sprite, origin, size);
