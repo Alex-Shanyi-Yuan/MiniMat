@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.alexyuan.Entity.Chest;
 import com.alexyuan.Entity.Entity;
+import com.alexyuan.Entity.Photo;
 import com.alexyuan.Entity.Potion;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
 import com.alexyuan.Entity.Cretures.Enemy.GreenGoblin;
@@ -12,7 +13,6 @@ import com.alexyuan.Entity.Cretures.Enemy.Minotaur;
 import com.alexyuan.Entity.Cretures.Enemy.PurpleGoblin;
 import com.alexyuan.Entity.Cretures.Enemy.TinyMon;
 import com.alexyuan.Entity.Cretures.NPC.Friend;
-import com.alexyuan.Entity.Cretures.NPC.NPC;
 import com.alexyuan.Entity.Cretures.Player.Player;
 import com.alexyuan.Entity.Cretures.Player.PlayerUI;
 import com.alexyuan.LoadFile.Textures;
@@ -37,6 +37,7 @@ public class PlayState extends GameState{
 	private ArrayList<Enemy> enemy;
 	private ArrayList<Chest> chest;
 	private ArrayList<Potion> potion;
+	private ArrayList<Photo> photo;
 	
 	private Friend friend;
 	
@@ -54,6 +55,7 @@ public class PlayState extends GameState{
 		friend = new Friend(cam, new Vector2f(640, 256), 64);
 		
 		potion = new ArrayList<Potion>();
+		photo = new ArrayList<Photo>();
 		
 		enemy = new ArrayList<Enemy>();
 		enemy.add(new GreenGoblin(cam, new Vector2f(1920,576), 64));
@@ -69,11 +71,11 @@ public class PlayState extends GameState{
 		enemy.add(new TinyMon(cam, new Vector2f(2688, 2112), 64));
 		
 		chest = new ArrayList<Chest>();
-		chest.add(new Chest(new Vector2f(950, 1300), 192, potion, 1));
-		chest.add(new Chest(new Vector2f(2112, 1546), 192, potion, 2));
-		chest.add(new Chest(new Vector2f(384, 2752), 192, potion, 3));
-		chest.add(new Chest(new Vector2f(1472, 2752), 192, potion, 4));
-		chest.add(new Chest(new Vector2f(2688, 2752), 192, potion, 5));
+		chest.add(new Chest(new Vector2f(950, 1300), 192, 1));
+		chest.add(new Chest(new Vector2f(2112, 1546), 192, 2));
+		chest.add(new Chest(new Vector2f(384, 2752), 192, 3));
+		chest.add(new Chest(new Vector2f(1472, 2752), 192, 4));
+		chest.add(new Chest(new Vector2f(2688, 2752), 192, 5));
 		
 		player = new Player(Textures.getPlayer(),new Vector2f(600 - 32,350 - 32), enemy);
 		
@@ -107,13 +109,19 @@ public class PlayState extends GameState{
 				enemy.get(i).update(player, time);
 		
 		for(Chest c : chest)
-			c.update(player);
+			c.update(player, potion, photo);
 		
 		for(int i = 0; i < potion.size(); i++)
 			if(potion.get(i).getDeath())
 				potion.remove(i);
 			else
 				potion.get(i).update(player);
+		
+		for(int i = 0; i < photo.size(); i++)
+			if(photo.get(i).getDeath())
+				photo.remove(i);
+			else
+				photo.get(i).update(player);
 	}
 
 	@Override
@@ -128,7 +136,10 @@ public class PlayState extends GameState{
 		for(Chest c : chest)
 			c.render(g);
 		
-		for(Entity p : potion)
+		for(Potion p : potion)
+			p.render(g);
+		
+		for(Photo p : photo)
 			p.render(g);
 		
 		player.render(g);
@@ -155,9 +166,5 @@ public class PlayState extends GameState{
 	
 	public static void setPause(Boolean p) {
 		pause  = p;
-	}
-	
-	public static GameStateManager getGsm() {
-		return gsm;
 	}
 }

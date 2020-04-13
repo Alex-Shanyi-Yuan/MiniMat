@@ -10,13 +10,11 @@ import com.alexyuan.Math.Vector2f;
 
 public class Chest extends Entity {
 	
-	private ArrayList<Potion> potion;
 	private int id;
 	
-	public Chest(Vector2f origin, int size, ArrayList<Potion> potion, int id) {
+	public Chest(Vector2f origin, int size, int id) {
 		super(Textures.getChest(), origin, size);
 		
-		this.potion = potion;
 		this.id = id;
 		
 		bounds.setWidth((int) (64));
@@ -38,7 +36,7 @@ public class Chest extends Entity {
 		
 	}
 	
-	public void update(Player player) {
+	public void update(Player player, ArrayList<Potion> potion, ArrayList<Photo> photo) {
 		super.update();
 		
 		if(player.bounds.collides(bounds) && player.getF() && !ani.hasPlayedOnce()) 
@@ -61,7 +59,7 @@ public class Chest extends Entity {
 					potion.add(new Potion(Textures.getPotionH(), new Vector2f(1047, 1400), "health", 32));
 				}
 				if(id == 3) {
-					
+					photo.add(new Photo(new Vector2f(385, 2858), 64));
 				}
 				if(id == 4) {
 					potion.add(new Potion(Textures.getPotionH(), new Vector2f(1569, 2858), "health", 32));

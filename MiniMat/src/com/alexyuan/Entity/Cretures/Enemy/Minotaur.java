@@ -29,6 +29,7 @@ public class Minotaur extends Enemy {
 		bounds.setXOffset(24);
 		bounds.setYOffset(40);
 
+		healthLength = 100;
         maxHealth = 300;
         health = 300;
 

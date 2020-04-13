@@ -18,4 +18,7 @@ public abstract class GameState {
 
 	protected abstract void updata(double time);
 	
+	public static GameStateManager getGsm() {
+		return gsm;
+	}
 }

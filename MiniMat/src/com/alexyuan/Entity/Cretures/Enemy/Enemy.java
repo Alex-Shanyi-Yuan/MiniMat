@@ -19,6 +19,8 @@ public abstract class Enemy extends Creture {
     protected AABB attackrange;
     protected int r_attackrange;
 
+    protected int healthLength;
+    
     protected ArrayList<Entity> collisions;
 
     public Enemy(Camera cam, SpriteSheet sprite, Vector2f origin, int size) {
@@ -59,12 +61,14 @@ public abstract class Enemy extends Creture {
     }
 
     public void update(Player player, double time) {
-        if(cam.getBounds().collides(this.bounds)) {
-            super.update(time);
-            this.animate();
+    	
+    	super.update(time);
+        this.animate();
+        
+     
             
-            if (!fallen) {
-
+        if (!fallen) {
+        	if(cam.getBounds().collides(this.bounds)) {
 	            attacking = isAttacking(time);
 	            
 		       	move();
@@ -73,39 +77,42 @@ public abstract class Enemy extends Creture {
 	            if(attackrange.colCircleBox(player.getBounds()) && !isInvincible) {
 	        	
 	                attackTime = System.nanoTime();
-	                if(attacking) {
+	                if(attacking)
 	                	player.setHealth(player.getHealth() - damage, force * getDirection(), currentDirection == UP || currentDirection == DOWN);
-	                }
 	            }
-
+	
 	            if (!tc.collisionTile(dx, 0)) {
-                    sense.getPos().addX(dx);
-                    attackrange.getPos().addX(dx);
-                    pos.addX(dx);
-                }
-                if (!tc.collisionTile(0, dy)) {
-                    sense.getPos().addY(dy);
-                    attackrange.getPos().addY(dy);
-                    pos.addY(dy);
-                }
-            } else {
-            	left = false;
-            	right = false;
-            	up = false;
-            	down = false;
-            	
-            	if(ani.hasPlayed(1))
-            		die = true;
-            }
-                 
+	                sense.getPos().addX(dx);
+	                attackrange.getPos().addX(dx);
+	                pos.addX(dx);
+	            }
+	            if (!tc.collisionTile(0, dy)) {
+	                sense.getPos().addY(dy);
+	                attackrange.getPos().addY(dy);
+	                pos.addY(dy);
+	            }
+        	}
+        } else {
+        	left = false;
+        	right = false;
+        	up = false;
+        	down = false;
+        	attacking = false;
+        	
+        	if(currentAnimation == RIGHT + ATTACK)
+        		currentAnimation = RIGHT;
+        	
+        	if(currentAnimation == LEFT + ATTACK)
+        		currentAnimation = LEFT;
+        	
+        	if(ani.hasPlayed(1) && (currentAnimation == RIGHT + FALLEN || currentAnimation == LEFT + FALLEN))
+        		die = true;         
         }
     }
 
     @Override
     public void render(Graphics2D g) {
 
-    	g.setColor(Color.blue);
-    	g.drawOval((int) sense.getPos().getWorldVar().getX(), (int) sense.getPos().getWorldVar().getY(), r_sense, r_sense);
     	g.setColor(Color.green);
     	g.drawOval((int) attackrange.getPos().getWorldVar().getX(), (int) attackrange.getPos().getWorldVar().getY(), r_attackrange, r_attackrange);
 
@@ -116,11 +123,11 @@ public abstract class Enemy extends Creture {
 			
             // Health Bar UI
             g.setColor(Color.red);
-			g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()) - 5, (int) (pos.getWorldVar().getY() - 5), 50, 5);
+			g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()) - 5, (int) (pos.getWorldVar().getY() - 5), healthLength, 5);
 			g.drawRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() + bounds.getYOffset()), (int) bounds.getWidth(), (int) bounds.getHeight());
 			
 			g.setColor(Color.green);
-            g.fillRect((int) (pos.getWorldVar().getX() + 7), (int) (pos.getWorldVar().getY() - 5), (int) (50 * healthPercent), 5);
+            g.fillRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()) - 5, (int) (pos.getWorldVar().getY() - 5), (int) (healthLength * healthPercent), 5);
 
         }
         

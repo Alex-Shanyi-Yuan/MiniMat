@@ -10,7 +10,7 @@ import com.alexyuan.util.MouseHandler;
 
 public class MenuState extends GameState {
 	
-	private boolean inPlay = false, inSetting = false, inExit = false;
+	private boolean inPlay = false, inStory = false, inExit = false;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -31,14 +31,14 @@ public class MenuState extends GameState {
 		else
 			inPlay = false;
 		
-		if(mouse.getX() >= 540 && mouse.getX() <= 650 && mouse.getY() >= 390 && mouse.getY() <= 410) {
-			inSetting = true;
+		if(mouse.getX() >= 555 && mouse.getX() <= 640 && mouse.getY() >= 390 && mouse.getY() <= 410) {
+			inStory = true;
 			
 			if(mouse.getButton() == 1)
-				gsm.addAndpop(gsm.SETTING);
+				gsm.addAndpop(gsm.STORY);
 		}
 		else
-			inSetting = false;
+			inStory = false;
 		
 		if(mouse.getX() >= 575 && mouse.getX() <= 625 && mouse.getY() >= 470 && mouse.getY() <= 490) {
 			inExit = true;
@@ -68,11 +68,11 @@ public class MenuState extends GameState {
 			g.setColor(Color.gray);
 		g.drawString("Play", 565, 330);
 		
-		if(inSetting)
+		if(inStory)
 			g.setColor(Color.red);
 		else
 			g.setColor(Color.gray);
-		g.drawString("Setting", 540, 410);
+		g.drawString("Story", 555, 410);
 		
 		if(inExit)
 			g.setColor(Color.red);

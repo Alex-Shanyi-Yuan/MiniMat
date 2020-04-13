@@ -57,4 +57,8 @@ public abstract class Entity {
         ani.setFrames(i, frames);
         ani.setDelay(delay);
     }
+	
+	public boolean getDeath() {
+		return die;
+	}
 }

@@ -29,6 +29,7 @@ public class GreenGoblin extends Enemy{
 		bounds.setXOffset(12);
 		bounds.setYOffset(40);
         
+		healthLength = 50;
         maxHealth = 100;
         health = 100;
 

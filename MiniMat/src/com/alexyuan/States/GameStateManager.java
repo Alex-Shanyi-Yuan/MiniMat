@@ -15,8 +15,9 @@ public class GameStateManager {
 	public final int MENU = 0;
 	public final int PLAY = 1;
 	public final int PAUSE = 2;
-	public final int GAMEOVER = 3;
-	public final int SETTING = 4;
+	public final int STORY = 3;
+	public final int GAMEOVER = 4;
+	
 	private int width, height;
     
 	private static Vector2f map;
@@ -47,22 +48,21 @@ public class GameStateManager {
             states[MENU] = new MenuState(this);
         else if (state == PAUSE) 
             states[PAUSE] = new PauseState(this);
+        else if (state == STORY) 
+            states[STORY] = new StoryState(this);
         else if (state == GAMEOVER) 
-            states[GAMEOVER] = new GameOverState(this);
-        else if (state == SETTING)
-        	states[SETTING] = new SettingState(this);
-    
+            states[GAMEOVER] = new GameOverState(this);    
     }
 	
-	protected boolean isStateActive(int state) {
+	public boolean isStateActive(int state) {
         return states[state] != null;
     }
 
-	protected void addAndpop(int state) {
+	public void addAndpop(int state) {
         addAndpop(state, MENU);
     }
 
-	protected void addAndpop(int state, int remove) {
+	public void addAndpop(int state, int remove) {
         pop(remove);
         add(state);
     }

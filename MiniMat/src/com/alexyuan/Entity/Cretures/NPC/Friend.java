@@ -6,11 +6,12 @@ import java.awt.Graphics2D;
 import com.alexyuan.LoadFile.Fonts;
 import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.Math.Vector2f;
+import com.alexyuan.States.PlayState;
 import com.alexyuan.util.Camera;
 
 public class Friend extends NPC{
 
-	private boolean hasItem = false;
+	private static boolean hasItem = false;
 	
 	public Friend(Camera cam, Vector2f origin, int size) {
 		super(cam, Textures.getGirl(), origin, size);
@@ -49,7 +50,10 @@ public class Friend extends NPC{
 				g.drawString("I am so greatful!", 110, 540);
 				g.drawString("I knew I could count on you, Sloim!", 110, 562);
 			} else if (count == 3)
-				g.drawString("Thank you so so much!" , 110,  540);
+				g.drawString("Thank you so so much!", 110, 540);
+			else if (count == 4) {
+				PlayState.getGsm().addAndpop(PlayState.getGsm().GAMEOVER, PlayState.getGsm().PLAY);
+			}
 		} else {
 			
 			if(count == 0)
@@ -59,15 +63,20 @@ public class Friend extends NPC{
 				g.drawString("Well...", 110, 562);
 			}else if(count == 2)
 				g.drawString("I LOST IT (T_T)", 110, 540);
-			else if(count == 3)
-				g.drawString("Please help me find it as a prove to our friend-ship! Thx :)", 110,  540);
-			else if(count == 4) {
+			else if(count == 3) {
+				g.drawString("The monsters has it!", 110, 540);
+				g.drawString("Please help me find it as a prove to our friend-ship! Thx :)", 110,  562);
+			} else if(count == 4) {
 				INTERACTE = false;
 				count = 0;
 			}
-			
-			g.setFont(Fonts.getMagon1().deriveFont(20f));
-			g.drawString("-> Enter", 1040, 600);
 		}
+		
+		g.setFont(Fonts.getMagon1().deriveFont(20f));
+		g.drawString("-> Enter", 1040, 600);
+	}
+	
+	public static void setHasItem(boolean b) {
+		hasItem = b;
 	}
 }

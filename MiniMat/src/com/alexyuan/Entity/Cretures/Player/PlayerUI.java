@@ -3,13 +3,14 @@ package com.alexyuan.Entity.Cretures.Player;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.alexyuan.Entity.Cretures.NPC.Friend;
 import com.alexyuan.LoadFile.Fonts;
 import com.alexyuan.LoadFile.Textures;
 
 public class PlayerUI {
 	
 	private final int FULL = 0, TF = 1, HALF = 2, OF = 3, EMPTY = 4;
-	private static int potionH = 0, potionD = 0;
+	private static int potionH = 0, potionD = 0, photo = 0;
 	
 	public void render(Graphics g, Player player) {
 		
@@ -17,12 +18,14 @@ public class PlayerUI {
 		g.setColor(Color.white);
 		g.drawString(" X " + potionD, 80, 134);
 		g.drawString(" X " + potionH, 80, 198);
+		g.drawString(" X " + photo, 80, 262);
 		g.setFont(Fonts.getMagon3().deriveFont(20f));
 		g.drawString("1", 25, 133);
 		g.drawString("2", 25, 197);
 		
 		g.drawImage(Textures.getPotionD().getSpriteArray(0)[0].getImage(), 15, 80, 64, 64, null);
 		g.drawImage(Textures.getPotionH().getSpriteArray(0)[0].getImage(), 15, 144, 64, 64, null);
+		g.drawImage(Textures.getPhoto().getSpriteArray(0)[0].getImage(), 15, 208, 64, 64, null);
 		
 		for(int i = 1; i <= Textures.getHeart().getSpriteArray(0).length; i++) {
 			if(player.getHealthPercent() * 100  >= i * 20)
@@ -62,6 +65,10 @@ public class PlayerUI {
 	
 	public static void gainPotionD() {
 		potionD++;
+	}
+	
+	public static void gainPhoto() {
+		photo++;
 	}
 	
 }

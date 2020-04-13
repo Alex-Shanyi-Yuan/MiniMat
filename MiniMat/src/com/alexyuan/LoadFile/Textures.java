@@ -10,6 +10,7 @@ public class Textures {
 	private static BufferedImage icon = null;
 	private static BufferedImage menuBack = null;
 	private static BufferedImage board = null;
+	private static BufferedImage storyBack = null;
 	
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
@@ -21,10 +22,12 @@ public class Textures {
 	private static SpriteSheet chest = null;
 	private static SpriteSheet potionH = null;
 	private static SpriteSheet potionD = null;
+	private static SpriteSheet photo = null;
 	
 	public Textures() {
 		icon = loadImage("/resources/Texture/Icon.png");
 		menuBack = loadImage("/resources/Texture/MenuBack.jpg");
+		storyBack = loadImage("/resources/Texture/StoryBack.jpg");
 		board = loadImage("/resources/Texture/Board.png");
 		
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
@@ -38,6 +41,7 @@ public class Textures {
 		chest = new SpriteSheet("resources/Entity/Chest.png", 64, 64);
 		potionH = new SpriteSheet("resources/Entity/Health_Potion.png", 64, 64);
 		potionD = new SpriteSheet("resources/Entity/Damage_Potion.png", 64, 64);
+		photo = new SpriteSheet("resources/Entity/photo.png", 1200, 706);
 		
 		
 	}
@@ -57,6 +61,10 @@ public class Textures {
 	
 	public static BufferedImage getMenuBack() {
 		return menuBack;
+	}
+	
+	public static BufferedImage getStoryBack() {
+		return storyBack;
 	}
 	
 	public static BufferedImage getBoard() {
@@ -101,5 +109,9 @@ public class Textures {
 	
 	public static SpriteSheet getPotionD() {
 		return potionD;
+	}
+
+	public static SpriteSheet getPhoto() {
+		return photo;
 	}
 }

@@ -29,6 +29,7 @@ public class TinyMon extends Enemy {
 		bounds.setXOffset(12);
 		bounds.setYOffset(40);
 
+		healthLength = 50;
         maxHealth = 300;
         health = 300;
 
@@ -50,7 +51,6 @@ public class TinyMon extends Enemy {
 
 	@Override
 	public void animate() {
-		
 		if(attacking && !fallen) {
 			if(currentAnimation == RIGHT || currentAnimation == DOWN) {
 				if ((currentAnimation != RIGHT + ATTACK || ani.getDelay() == -1))
