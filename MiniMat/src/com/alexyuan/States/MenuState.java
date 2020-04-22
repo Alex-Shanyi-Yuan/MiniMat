@@ -3,6 +3,9 @@ package com.alexyuan.States;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.sound.sampled.Clip;
+
+import com.alexyuan.LoadFile.Audio;
 import com.alexyuan.LoadFile.Fonts;
 import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.util.KeyHandler;
@@ -10,23 +13,52 @@ import com.alexyuan.util.MouseHandler;
 
 public class MenuState extends GameState {
 	
-	private boolean inPlay = false, inStory = false, inExit = false;
+	private boolean inPlay = false, inStory = false, inExit = false,
+					playClick = false, storyClick = false, exitClick = false;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
+	}
+
+	@Override
+	public void updata(double time) {
+		
+		if(gsm.isStateActive(gsm.STORY))
+			return;
+		
+		if(playClick) {
+			
+			if(!gsm.isStateActive(gsm.PLAY)) {
+				gsm.addAndpop(gsm.PLAY, gsm.MENU);
+			}
+			else {
+				gsm.pop(gsm.MENU);
+				PlayState.setPause(false);
+				gsm.getAudio().getBackgrouds()[gsm.PLAY].setMicrosecondPosition(0);
+				gsm.getAudio().getBackgrouds()[gsm.PLAY].start();
+			}
+			
+			playClick = false;
+		}else if(storyClick) {
+			gsm.add(gsm.STORY);
+			storyClick = false;
+		}
+		else if(exitClick)
+			System.exit(0);
 		
 	}
 
 	@Override
-	public void updata(double time) {}
-
-	@Override
 	public void input(MouseHandler mouse, KeyHandler key) {
+		
+		if(gsm.isStateActive(gsm.STORY))
+			return;
+		
 		if(mouse.getX() >= 565 && mouse.getX() <= 630 && mouse.getY() >= 310 && mouse.getY() <= 330) {
 			inPlay = true;
 			
 			if(mouse.getButton() == 1)
-				gsm.addAndpop(gsm.PLAY);
+				playClick = true;
 		}
 		else
 			inPlay = false;
@@ -35,7 +67,7 @@ public class MenuState extends GameState {
 			inStory = true;
 			
 			if(mouse.getButton() == 1)
-				gsm.addAndpop(gsm.STORY);
+				storyClick = true;
 		}
 		else
 			inStory = false;
@@ -44,7 +76,7 @@ public class MenuState extends GameState {
 			inExit = true;
 			
 			if(mouse.getButton() == 1)
-				System.exit(0);
+				exitClick = true;
 		}
 		else
 			inExit = false;
@@ -52,6 +84,10 @@ public class MenuState extends GameState {
 
 	@Override
 	public void render(Graphics2D g) {
+		
+		if(gsm.isStateActive(gsm.STORY))
+			return;
+		
 		g.drawImage(Textures.getMenuBack(), 0, -80, null);
 		
 		g.setColor(Color.gray);

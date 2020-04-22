@@ -9,12 +9,16 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import com.alexyuan.States.GameStateManager;
+
 public class Audio {
 	
-	private static Clip intro;
+	private Clip[] backgrounds;
 	
 	public Audio() {
-		intro = loadFile(Audio.class.getResource("/resources/Audio/IntroMusic.wav"));
+		backgrounds = new Clip[GameStateManager.STATES];
+		backgrounds[GameStateManager.MENU] = loadFile(Audio.class.getResource("/resources/Audio/IntroMusic.wav"));
+		backgrounds[GameStateManager.PLAY] = loadFile(Audio.class.getResource("/resources/Audio/PlaySceneBack.wav"));
 	}
 	
 	private static Clip loadFile(URL musicLocation) {
@@ -34,8 +38,8 @@ public class Audio {
 		return null;
 	}
 	
-	public static Clip getIntro() {
-		return intro;
+	public Clip[] getBackgrouds() {
+		return backgrounds;
 	}
 	
     //music.loop(Clip.LOOP_CONTINUOUSLY);

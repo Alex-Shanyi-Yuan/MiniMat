@@ -90,8 +90,6 @@ public class TileManager {
 	}
 	
 	public void render(Graphics2D g) {
-        if(cam == null)
-            return;
             
         for(int i = 0; i < tm.size(); i++) {
             tm.get(i).render(g, cam.getBounds());

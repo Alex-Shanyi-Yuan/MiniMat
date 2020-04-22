@@ -8,11 +8,12 @@ public class GameLauncher {
 	
 	private static GameWindow window;
 	private static SplashWindow splash;
+	private static Audio audio;
 	
 	public GameLauncher() {
 		
 		new Fonts();
-		new Audio();
+		audio = new Audio();
 		new Textures();
 //		splash = new SplashWindow(400,500);
 		window = new GameWindow(1200,700);
@@ -25,6 +26,10 @@ public class GameLauncher {
 
 	public static GameWindow getWindow() {
 		return window;
+	}
+	
+	public static Audio getAduio() {
+		return audio;
 	}
 
 }

@@ -11,6 +11,9 @@ public class Textures {
 	private static BufferedImage menuBack = null;
 	private static BufferedImage board = null;
 	private static BufferedImage storyBack = null;
+	private static BufferedImage info = null;
+	private static BufferedImage overFail = null;
+	private static BufferedImage overWin = null;
 	
 	private static SpriteSheet player = null;
 	private static SpriteSheet girl = null;
@@ -29,6 +32,9 @@ public class Textures {
 		menuBack = loadImage("/resources/Texture/MenuBack.jpg");
 		storyBack = loadImage("/resources/Texture/StoryBack.jpg");
 		board = loadImage("/resources/Texture/Board.png");
+		info = loadImage("/resources/Texture/intro.png");
+		overFail = loadImage("/resources/Texture/Over_Fail.png");
+		overWin = loadImage("/resources/Texture/Over_Win.png");
 		
 		player = new SpriteSheet("resources/Entity/wizardPlayer.png", 64, 64);
 		girl = new SpriteSheet("resources/Entity/littlegirl.png", 48, 48);
@@ -69,6 +75,18 @@ public class Textures {
 	
 	public static BufferedImage getBoard() {
 		return board;
+	}
+	
+	public static BufferedImage getInfo() {
+		return info;
+	}
+	
+	public static BufferedImage getOverFail() {
+		return overFail;
+	}
+	
+	public static BufferedImage getOverWin() {
+		return overWin;
 	}
 	
 	public static SpriteSheet getPlayer() {

@@ -131,7 +131,7 @@ public class Player extends Creture{
 		g.drawRect((int) (pos.getWorldVar().getX() + bounds.getXOffset()), (int) (pos.getWorldVar().getY() + bounds.getYOffset()), (int) bounds.getWidth(), (int) bounds.getHeight());
 		g.drawImage(ani.getImage().getImage(), (int) pos.getWorldVar().getX(), (int)pos.getWorldVar().getY(), size, size, null);
 	}
-	
+	//TODO: FIX MAP WHEN PAUSED
 	public void input(MouseHandler mouse, KeyHandler key) {
 		key.getF().tick();
 		key.getAttack().tick();
@@ -141,11 +141,11 @@ public class Player extends Creture{
 		key.getEscape().tick();
 		
 		if(key.getEscape().isClicked()) {
-			if(PlayState.isPause())
+        	if(PlayState.isPause()) 
 				PlayState.getGsm().pop(PlayState.getGsm().PAUSE);
-			else
+			else 
 				PlayState.getGsm().add(PlayState.getGsm().PAUSE);
-			
+
 			PlayState.setPause(!PlayState.isPause());
 		}
 		

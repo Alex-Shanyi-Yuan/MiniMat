@@ -1,9 +1,11 @@
 package com.alexyuan.States;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+
+import javax.sound.sampled.Clip;
 
 import com.alexyuan.GamePanel;
+import com.alexyuan.LoadFile.Audio;
 import com.alexyuan.Math.Vector2f;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
@@ -12,30 +14,32 @@ public class GameStateManager {
 	
 	private GameState[] states;
 	
-	public final int MENU = 0;
-	public final int PLAY = 1;
-	public final int PAUSE = 2;
-	public final int STORY = 3;
-	public final int GAMEOVER = 4;
+	public static final int STATES = 5;
+	public static final int MENU = 2;
+	public static final int PLAY = 0;
+	public static final int PAUSE = 1;
+	public static final int STORY = 3;
+	public static final int GAMEOVER = 4;
 	
 	private int width, height;
     
-	private static Vector2f map;
+	private Audio audio;
 	
-	public GameStateManager(int width, int height) {
+	public GameStateManager(int width, int height, Audio audio) {
 		this.width = width;
 		this.height = height;
+		this.audio = audio;
 		
-		map = new Vector2f(GamePanel.WIDTH, GamePanel.HEIGHT);
-		Vector2f.setWorldVar(map.getX(), map.getY());
+		states = new GameState[STATES];
 		
-		states = new GameState[5];
-		
-		states[MENU] = new MenuState(this);
+		add(MENU);
 	}
 	
 	public void pop(int state) {
         states[state] = null;
+        
+        if(audio.getBackgrouds()[state] != null)
+        	audio.getBackgrouds()[state].stop();
     }
 
 	public void add(int state) {
@@ -51,16 +55,18 @@ public class GameStateManager {
         else if (state == STORY) 
             states[STORY] = new StoryState(this);
         else if (state == GAMEOVER) 
-            states[GAMEOVER] = new GameOverState(this);    
+            states[GAMEOVER] = new GameOverState(this);
+        
+        if(audio.getBackgrouds()[state] != null) {
+        	audio.getBackgrouds()[state].setMicrosecondPosition(0);
+        	audio.getBackgrouds()[state].start();
+        	audio.getBackgrouds()[state].loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 	
 	public boolean isStateActive(int state) {
         return states[state] != null;
-    }
-
-	public void addAndpop(int state) {
-        addAndpop(state, MENU);
-    }
+	}
 
 	public void addAndpop(int state, int remove) {
         pop(remove);
@@ -68,7 +74,6 @@ public class GameStateManager {
     }
 
 	public void update(double time) {
-		Vector2f.setWorldVar(map.getX(), map.getY());
 		for(GameState i : states) {
 			if(i != null)
 				i.updata(time);
@@ -87,6 +92,10 @@ public class GameStateManager {
 			if( i != null)
 				i.input(mouse, key);
 		}
+	}
+	
+	public Audio getAudio() {
+		return audio;
 	}
 	
 }

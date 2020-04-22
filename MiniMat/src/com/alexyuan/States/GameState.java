@@ -2,11 +2,13 @@ package com.alexyuan.States;
 
 import java.awt.Graphics2D;
 
+import com.alexyuan.LoadFile.Audio;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 
 public abstract class GameState {
 	protected static GameStateManager gsm;
+	protected static Audio audio;
 	
 	public GameState(GameStateManager gsm) {
 		this.gsm = gsm;

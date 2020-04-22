@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import com.alexyuan.Entity.Chest;
-import com.alexyuan.Entity.Entity;
 import com.alexyuan.Entity.Photo;
 import com.alexyuan.Entity.Potion;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
@@ -15,6 +14,7 @@ import com.alexyuan.Entity.Cretures.Enemy.TinyMon;
 import com.alexyuan.Entity.Cretures.NPC.Friend;
 import com.alexyuan.Entity.Cretures.Player.Player;
 import com.alexyuan.Entity.Cretures.Player.PlayerUI;
+import com.alexyuan.LoadFile.Audio;
 import com.alexyuan.LoadFile.Textures;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
@@ -28,7 +28,7 @@ public class PlayState extends GameState{
 	private static boolean pause = false;
 	
 	private PlayerUI playerUI;
-	private Player player;
+	private static Player player;
 	private TileManager tm;
 	
 	private static Vector2f map;
@@ -84,6 +84,8 @@ public class PlayState extends GameState{
 
 	public void updata(double time) {
 		
+		Vector2f.setWorldVar(map.getX(), map.getY());
+		
 		if(pause)
 			return;
 		
@@ -92,7 +94,6 @@ public class PlayState extends GameState{
 		if(friend.getInteracte())
 			return;
 		
-		Vector2f.setWorldVar(map.getX(), map.getY());
 		cam.update();
 		
 		playerUI.update(player);
@@ -166,5 +167,9 @@ public class PlayState extends GameState{
 	
 	public static void setPause(Boolean p) {
 		pause  = p;
+	}
+	
+	public static Player getPlayer() {
+		return player;
 	}
 }

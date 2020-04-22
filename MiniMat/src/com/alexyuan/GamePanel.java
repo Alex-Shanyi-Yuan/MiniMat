@@ -1,21 +1,13 @@
 package com.alexyuan;
 
 import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-
-import javax.sound.sampled.Clip;
-import javax.swing.JPanel;
 
 import com.alexyuan.States.GameStateManager;
 import com.alexyuan.util.KeyHandler;
 import com.alexyuan.util.MouseHandler;
 import com.alexyuan.GameLauncher;
-import com.alexyuan.LoadFile.Audio;
-import com.alexyuan.LoadFile.Textures;
 
 public class GamePanel extends Canvas implements Runnable{
 
@@ -43,12 +35,10 @@ public class GamePanel extends Canvas implements Runnable{
 		
 		running = true;
 		
-		Audio.getIntro().loop(Clip.LOOP_CONTINUOUSLY);
-		
 		mouse = new MouseHandler(this);
 		key = new KeyHandler(this);
 		
-		gsm = new GameStateManager(width,height);
+		gsm = new GameStateManager(width, height, GameLauncher.getAduio());
 		
 		thread = new Thread(this, "Game");
 		thread.start();
