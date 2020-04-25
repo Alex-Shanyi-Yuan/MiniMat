@@ -20,8 +20,8 @@ public class PurpleGoblin extends Enemy{
         sense = new AABB(new Vector2f(pos.getX() + size / 2 - r_sense / 2, pos.getY() + size / 2 - r_sense / 2), r_sense);
         attackrange = new AABB(new Vector2f(pos.getX() + bounds.getXOffset() + bounds.getWidth() / 2 - r_attackrange / 2 , pos.getY() + bounds.getYOffset() + bounds.getHeight() / 2 - r_attackrange / 2 ), r_attackrange);
         
-        attackSpeed = 10000;
-        attackDuration = 250;
+        attackSpeed = 525;
+        attackDuration = 350;
         force = 6f;
 		
         bounds.setWidth(42);

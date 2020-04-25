@@ -10,6 +10,7 @@ import com.alexyuan.Entity.Cretures.Player.Player;
 import com.alexyuan.LoadFile.SpriteSheet;
 import com.alexyuan.Math.AABB;
 import com.alexyuan.Math.Vector2f;
+import com.alexyuan.States.PlayState;
 import com.alexyuan.util.Camera;
 
 public abstract class Enemy extends Creture {
@@ -60,12 +61,10 @@ public abstract class Enemy extends Creture {
         }
     }
 
-    public void update(Player player, double time) {
+public void update(Player player, double time) {
     	
     	super.update(time);
         this.animate();
-        
-     
             
         if (!fallen) {
         	if(cam.getBounds().collides(this.bounds)) {
@@ -77,8 +76,11 @@ public abstract class Enemy extends Creture {
 	            if(attackrange.colCircleBox(player.getBounds()) && !isInvincible) {
 	        	
 	                attackTime = System.nanoTime();
-	                if(attacking)
+	                if(attacking) {
 	                	player.setHealth(player.getHealth() - damage, force * getDirection(), currentDirection == UP || currentDirection == DOWN);
+	                	PlayState.getGsm().getAudio().getEffects()[PlayState.getGsm().getAudio().HURT].start();
+	                } else
+	                	PlayState.getGsm().getAudio().getEffects()[PlayState.getGsm().getAudio().HURT].setMicrosecondPosition(0);
 	            }
 	
 	            if (!tc.collisionTile(dx, 0)) {

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineUnavailableException;
+
 import com.alexyuan.GamePanel;
 import com.alexyuan.Entity.Cretures.Creture;
 import com.alexyuan.Entity.Cretures.Enemy.Enemy;
@@ -38,7 +40,7 @@ public class Player extends Creture{
 		deacc = 0.3f;
 		force = 25f;
 		
-		attackDuration = 325;
+		attackDuration = 500;
 		attackSpeed = 525;
 		damage = 500;
 		
@@ -93,14 +95,17 @@ public class Player extends Creture{
         } else{
             xCol = true;
             yCol = true;
+                        
             if(ani.hasPlayedOnce()) {
                 resetPosition();
                 dx = 0;
                 dy = 0;
                 fallen = false;
                 
-                if(this.getHealth() <= 0)
+                if(this.getHealth() <= 0) {
                 	die = true;
+                	PlayState.getGsm().getAudio().getEffects()[PlayState.getGsm().getAudio().PLAYERDIE].start();
+                }
             }
         }
        
@@ -191,10 +196,12 @@ public class Player extends Creture{
             	two = false;
             }
             if(key.getAttack().isClicked() && canAttack) {
+            	PlayState.getGsm().getAudio().getEffects()[PlayState.getGsm().getAudio().SWORDATTACK].start();
                 attack = true;
                 attackTime = System.nanoTime();
             } else {
                 if(!attacking) {
+					PlayState.getGsm().getAudio().getEffects()[PlayState.getGsm().getAudio().SWORDATTACK].setMicrosecondPosition(0);
                     attack = false;
                 }
             }

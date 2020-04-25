@@ -8,7 +8,6 @@ import com.alexyuan.util.MouseHandler;
 
 public abstract class GameState {
 	protected static GameStateManager gsm;
-	protected static Audio audio;
 	
 	public GameState(GameStateManager gsm) {
 		this.gsm = gsm;

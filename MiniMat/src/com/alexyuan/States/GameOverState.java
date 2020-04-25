@@ -16,16 +16,23 @@ public class GameOverState extends GameState {
 	public GameOverState(GameStateManager gsm) {
 		super(gsm);
 
-		if(PlayState.getPlayer().getDeath())
+		if(PlayState.getPlayer().getDeath()) {
 			win = false;
-		else win = true;
+			gsm.getAudio().getEffects()[gsm.getAudio().GAMEOVER].start();
+		} else {
+			win = true;
+			gsm.getAudio().getEffects()[gsm.getAudio().WINGAME].start();
+		}
 	}
 
 	@Override
 	public void updata(double time) {
-		if(clicked)
+		if(clicked) {
 			gsm.addAndpop(gsm.MENU, gsm.GAMEOVER);
-		else
+			gsm.getAudio().getEffects()[gsm.getAudio().GAMEOVER].setMicrosecondPosition(0);
+			gsm.getAudio().getEffects()[gsm.getAudio().WINGAME].setMicrosecondPosition(0);
+			gsm.getAudio().getEffects()[gsm.getAudio().PLAYERDIE].setMicrosecondPosition(0);
+		} else
 			clicked = false;
 
 	}
